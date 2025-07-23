@@ -69,7 +69,10 @@ class HomeScreen extends StatelessWidget {
                         leading: const Icon(Icons.cleaning_services),
                         title: const Text('Mencuci piring'),
                         subtitle: const Text('23 Juli 2025, 19:00'),
-                        trailing: const Icon(Icons.check_box_outline_blank),
+                        trailing: Checkbox(
+                          value: false,
+                          onChanged: null,
+                        ),
                       ),
                     ),
                     Card(
@@ -81,7 +84,10 @@ class HomeScreen extends StatelessWidget {
                         leading: const Icon(Icons.directions_run),
                         title: const Text('Jogging'),
                         subtitle: const Text('23 Juli 2025, 05:00'),
-                        trailing: const Icon(Icons.check_box_outline_blank),
+                        trailing: Checkbox(
+                          value: false,
+                          onChanged: null,
+                        ),
                       ),
                     ),
                     Card(
@@ -93,7 +99,10 @@ class HomeScreen extends StatelessWidget {
                         leading: const Icon(Icons.group),
                         title: const Text('Bermain bersama teman'),
                         subtitle: const Text('23 Juli 2025, 13:00'),
-                        trailing: const Icon(Icons.check_box_outline_blank),
+                        trailing: Checkbox(
+                          value: false,
+                          onChanged: null,
+                        ),
                       ),
                     ),
                     Card(
@@ -105,7 +114,10 @@ class HomeScreen extends StatelessWidget {
                         leading: const Icon(Icons.mosque),
                         title: const Text('Sholawat dengan Teman'),
                         subtitle: const Text('24 Juli 2025, 20:00'),
-                        trailing: const Icon(Icons.check_box_outline_blank),
+                        trailing: Checkbox(
+                          value: false,
+                          onChanged: null,
+                        ),
                       ),
                     ),
                     Card(
@@ -117,7 +129,10 @@ class HomeScreen extends StatelessWidget {
                         leading: const Icon(Icons.shopping_bag),
                         title: const Text('Beli skincare'),
                         subtitle: const Text('25 Juli 2025, 09:00'),
-                        trailing: const Icon(Icons.check_box_outline_blank),
+                        trailing: Checkbox(
+                          value: false,
+                          onChanged: null,
+                        ),
                       ),
                     ),
                   ],

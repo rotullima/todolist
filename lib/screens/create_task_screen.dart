@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class CreateTaskScreen extends StatelessWidget {
   const CreateTaskScreen({super.key});
 
- @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 253, 203, 203),
       body: SafeArea(
         child: Column(
           children: [
@@ -30,27 +30,59 @@ class CreateTaskScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: const [
                         Text(
-                          'To Do Day',
+                          'Add New Task',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         SizedBox(height: 4),
-                        Text(
-                          'July, 25, 2025',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black54,
-                          ),
-                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 24), 
+                  const SizedBox(width: 24),
                 ],
               ),
             ),
 
+            const SizedBox(height: 20),
+
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Task Title',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          Card(
+                            color: const Color(0xFFFFE46A),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const ListTile(
+                              title: Text('Task Title'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
