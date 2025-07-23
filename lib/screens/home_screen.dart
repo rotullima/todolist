@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 24), // Sebagai penyeimbang dari Icon kiri
+                  const SizedBox(width: 24), 
                 ],
               ),
             ),
