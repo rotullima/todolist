@@ -32,7 +32,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
       endTime: endTime,
       subject: 'Do the dishes',
       color: const Color.fromRGBO(255, 235, 59, 1),
-      location: 'Ruang Zoom',
     ));
 
     return tasks;
