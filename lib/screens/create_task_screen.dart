@@ -54,7 +54,41 @@ class CreateTaskScreen extends StatelessWidget {
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      ),
+                      const SizedBox(width: 24,),
+                      const Text(
+                        'Task Title',
+                        style:TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFFEEAECA),
+                              Color(0xFFC06AF2),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.all(12),
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: const Text(
+                          'Task Title',
+                          style: TextStyle(color: Colors.black45),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      const Text(
+                        'Category',
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          
+                        ],
                       )
                   ],
                 ),
