@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Card(
                     child: Container(
-                        margin: EdgeInsets.all(0),
+                      margin: EdgeInsets.all(0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -99,16 +99,20 @@ class HomeScreen extends StatelessWidget {
                               );
                             },
                             child: Container(
-                                padding:  const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
-                                decoration:  const BoxDecoration(
-                                    color: Color(0xFFA0D7C8),
-                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 100, vertical: 20),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFA0D7C8),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.calendar_month,
+                                  size: 20,
                                 ),
-                                child: ListTile(
-                                    leading: Icon(Icons.calendar_month,
-                                    size: 20,),
-                                    title: Text(" Calendar Appoinment"),
-                                ),
+                                title: Text(" Calendar Appoinment"),
+                              ),
                             ),
                           )
                         ],
