@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'splash_screen.dart';
+import 'calender.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,14 +10,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFFFFFFF),
-              Color(0xFFEEB7E7),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,21 +19,14 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
               decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color(0xFFEEAECA),
-                    Color(0xFFC06AF2),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+                color: Color(0xFFA0D7CB),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(30),
                   bottomRight: Radius.circular(30),
                 ),
                 boxShadow: [
                   BoxShadow(
-                      color: Color(0xFFC06AF2),
+                      color: Color(0xFFA0D7CB),
                       spreadRadius: 5,
                       blurRadius: 15),
                 ],
@@ -51,9 +38,12 @@ class HomeScreen extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SplashScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SplashScreen()));
                     },
-                    ),
+                  ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,7 +66,10 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("My Task", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),),
+                  Text(
+                    "My Task",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+                  ),
                   Card(
                     child: ListTile(
                       leading: Icon(Icons.access_time_filled_rounded),
@@ -91,6 +84,37 @@ class HomeScreen extends StatelessWidget {
                       subtitle: Text("4 Task Done"),
                     ),
                   ),
+                  Card(
+                    child: Container(
+                        margin: EdgeInsets.all(0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CalenderScreen()),
+                              );
+                            },
+                            child: Container(
+                                padding:  const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                                decoration:  const BoxDecoration(
+                                    color: Color(0xFFA0D7C8),
+                                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                                ),
+                                child: ListTile(
+                                    leading: Icon(Icons.calendar_month,
+                                    size: 20,),
+                                    title: Text(" Calendar Appoinment"),
+                                ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
