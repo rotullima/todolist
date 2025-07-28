@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projek2_aplikasi_todolist/screens/home_screen.dart';
 import 'package:projek2_aplikasi_todolist/screens/splash_screen.dart';
-import 'package:projek2_aplikasi_todolist/screens/calender.dart';
 
 void main() {
   runApp(const TodoApp());

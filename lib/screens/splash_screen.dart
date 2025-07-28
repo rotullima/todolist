@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -15,40 +16,38 @@ class SplashScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const SizedBox(height: 24),
-                const Text(
+                Text(
                   'To Do Day',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFA0D7C8),
                   ),
                 ),
-                const SizedBox(height: 24),
-                Container(
-                  width: 326,
-                  height: 282,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFA0D7C8),
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      'Logo.png',
-                      width: 195,
-                      fit: BoxFit.contain,
+                ClipOval(
+                  child: Container(
+                    width: 326,
+                    height: 282,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFA0D7C8),
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        'Logo.png',
+                        width: 195,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
                 Container(
-                  child: const Column(
+                  child: Column(
                     children: [
                       Text(
                         'Get organized  your life',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 24,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w800,
                           color: Color(0xFF584A4A),
                         ),
                         textAlign: TextAlign.center,
@@ -57,7 +56,7 @@ class SplashScreen extends StatelessWidget {
                         'simple and affective\n'
                         'to-do list and task manager app\n'
                         'which helps you manage time\n',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: Color(0xFF584A4A),
@@ -87,9 +86,9 @@ class SplashScreen extends StatelessWidget {
                             color: Color(0xFFA0D7C8),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          child: const Text(
+                          child: Text(
                             'Get Started',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                               color: Color(0xFF584A4A),
