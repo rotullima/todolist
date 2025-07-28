@@ -319,9 +319,9 @@ void showTopSnackBar(BuildContext context, String message) {
         child: Container(
           padding: EdgeInsets.all(25),
           decoration: BoxDecoration(
-            color: Color(0xFFA0D7C8),
+            color: Color(0xFF5DEE4F),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Color(0xFF4A998B), width: 4),
+            border: Border.all(color: Color(0xFF15FF00), width: 4),
           ),
           child: Center(
             child: Text(

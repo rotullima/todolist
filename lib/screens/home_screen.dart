@@ -46,23 +46,24 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         'Hello,',
                         style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 24,
                           color: Color(0xFF584A4A),
                         ),
                       ),
                       Text(
                         'Richo Ferdinand',
                         style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 24,
                           color: Color(0xFF584A4A),
                         ),
                       ),
                       Text(
                         'Slow Living',
                         style: GoogleFonts.poppins(
-                          fontSize: 20,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xFF584A4A),
                         ),
                       ),
@@ -84,8 +85,8 @@ class HomeScreen extends StatelessWidget {
                     Text(
                       'My Task',
                       style: GoogleFonts.poppins(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
                         color: Color(0xFF584A4A),
                       ),
                     ),
@@ -112,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                               height: 70,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              child: Icon(Icons.schedule, size: 60),
+                              child: Icon(Icons.schedule, size: 61),
                             ),
                             SizedBox(width: 12),
                             Column(
@@ -122,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                                   'To Do',
                                   style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w700,
                                     color: Color(0xFF584A4A),
                                   ),
                                 ),
@@ -130,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                                   '5 Task Now',
                                   style: GoogleFonts.poppins(
                                     fontSize: 15,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w500,
                                     color: Color(0xFF584A4A),
                                   ),
                                 ),
@@ -165,7 +166,7 @@ class HomeScreen extends StatelessWidget {
                               height: 70,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              child: Icon(Icons.check_circle_outline, size: 60),
+                              child: Icon(Icons.check_circle_outline, size: 61),
                             ),
                             SizedBox(width: 12),
                             Column(
@@ -175,7 +176,7 @@ class HomeScreen extends StatelessWidget {
                                   'Done',
                                   style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w700,
                                     color: Color(0xFF584A4A),
                                   ),
                                 ),
@@ -183,7 +184,7 @@ class HomeScreen extends StatelessWidget {
                                   '5 Task Now | 3 Task Done',
                                   style: GoogleFonts.poppins(
                                     fontSize: 15,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w500,
                                     color: Color(0xFF584A4A),
                                   ),
                                 ),
@@ -225,7 +226,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   child: Icon(
                                     Icons.calendar_month,
-                                    size: 60,
+                                    size: 61,
                                   ),
                                 ),
                                 SizedBox(width: 12),
@@ -233,7 +234,7 @@ class HomeScreen extends StatelessWidget {
                                   'Calendar Appointment',
                                   style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w700,
                                     color: Color(0xFF584A4A),
                                   ),
                                 ),
@@ -291,6 +292,7 @@ class HomeScreen extends StatelessWidget {
           child: Icon(
             Icons.add,
             size: 40,
+            color: Colors.black,
           ),
         ),
       ),
@@ -311,7 +313,7 @@ class HomeScreen extends StatelessWidget {
               },
               icon: Icon(
                 Icons.home,
-                color: Colors.white,
+                color: Colors.black,
                 size: 45,
               ),
             ),
@@ -327,7 +329,7 @@ class HomeScreen extends StatelessWidget {
               },
               icon: Icon(
                 Icons.person,
-                color: Colors.white,
+                color: Colors.black,
                 size: 45,
               ),
             )

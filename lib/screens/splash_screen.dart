@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
                   'To Do Day',
                   style: GoogleFonts.poppins(
                     fontSize: 36,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                     color: Color(0xFFA0D7C8),
                   ),
                 ),
@@ -47,7 +47,7 @@ class SplashScreen extends StatelessWidget {
                         'Get organized  your life',
                         style: GoogleFonts.poppins(
                           fontSize: 24,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                           color: Color(0xFF584A4A),
                         ),
                         textAlign: TextAlign.center,
@@ -58,7 +58,7 @@ class SplashScreen extends StatelessWidget {
                         'which helps you manage time\n',
                         style: GoogleFonts.poppins(
                           fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           color: Color(0xFF584A4A),
                         ),
                         textAlign: TextAlign.center,

@@ -44,8 +44,9 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                         Text(
                           'To Do Day',
                           style: GoogleFonts.poppins(
-                            fontSize: 24,
+                            fontSize: 32,
                             fontWeight: FontWeight.w700,
+                            color: Color(0xFF584A4A),
                           ),
                         ),
                         SizedBox(height: 4),
@@ -53,7 +54,8 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                           'July, 25, 2025',
                           style: GoogleFonts.poppins(
                             fontSize: 15,
-                            color: Colors.black54,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
                           ),
                         ),
                       ],

@@ -36,10 +36,11 @@ class MyProfileScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'My Profile',
+                          'Profil',
                           style: GoogleFonts.poppins(
                             fontSize: 24,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF584A4A),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -58,16 +59,27 @@ class MyProfileScreen extends StatelessWidget {
                         Text(
                           'Richo Ferdinand',
                           style: GoogleFonts.poppins(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF584A4A),
                           ),
                         ),
                         SizedBox(height: 10),
                         Text(
                           'Slow Living',
                           style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            color: Colors.black54,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Malang',
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
                           ),
                         ),
                       ],
@@ -84,67 +96,121 @@ class MyProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "My Bio",
+                    "Edit Profil",
                     style: GoogleFonts.poppins(
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
+                      color: Color(0xFF584A4A),
                     ),
                   ),
                   Text(
                     "Name",
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
+                      color: Color(0xFF584A4A),
                     ),
                   ),
                   SizedBox(height: 10),
+                  
                   Container(
                     width: 400,
-                    height: 50,
+                    height: 40,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
                     color: Color(0xFFA0D7C8),
-                    child: Text("Richo Ferdinand"),
+                    borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "Richo Ferdinand",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF584A4A),
+                    ),
+                    ),
                   ),
                   Text(
-                    "Name",
+                    "Bio",
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
+                      color: Color(0xFF584A4A),
                     ),
                   ),
                   SizedBox(height: 10),
                   Container(
                     width: 400,
-                    height: 50,
+                    height: 40,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
                     color: Color(0xFFA0D7C8),
-                    child: Text("Richo Ferdinand"),
+                    borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "Slow Living | Malang",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF584A4A),
+                      ),
+                      ),
                   ),
                   Text(
-                    "Name",
+                    "Birth Date",
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
+                      color: Color(0xFF584A4A),
                     ),
                   ),
                   SizedBox(height: 10),
                   Container(
                     width: 400,
-                    height: 50,
+                    height: 40,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
                     color: Color(0xFFA0D7C8),
-                    child: Text("Richo Ferdinand"),
+                    borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "June, 11, 2008",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF584A4A),
+                      ),
+                      ),
                   ),
                   Text(
-                    "Name",
+                    "Number Phone",
                     style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
+                      color: Color(0xFF584A4A),
                     ),
                   ),
                   SizedBox(height: 10),
                   Container(
                     width: 400,
-                    height: 50,
+                    height: 40,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
                     color: Color(0xFFA0D7C8),
-                    child: Text("Richo Ferdinand"),
+                    borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "087878456321",
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF584A4A),
+                      ),
+                      ),
                   ),
                 ],
               ),
