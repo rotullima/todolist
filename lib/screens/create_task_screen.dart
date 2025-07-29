@@ -18,7 +18,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     'Work',
     'Lainnya'
   ];
+  final List<String> listPrioritas = [
+    'Tinggi',
+    'Sedang',
+    'Rendah',
+  ];
   String? kategoriTerpilih;
+  String? prioritasTerpilih;
 
   DateTime? tanggalTerpilih;
   TimeOfDay? waktuTerpilih;
@@ -156,6 +162,50 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       ),
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+
+                  // PRIORITAS
+                  Text(
+                    "Priority",
+                    style: GoogleFonts.poppins(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  DropdownButtonFormField<String>(
+                    value: prioritasTerpilih,
+                    hint: Text(
+                      "Select Priority",
+                      style: GoogleFonts.poppins(fontSize: 18),
+                    ),
+                    items: listPrioritas.map(
+                      (String prioritas) {
+                        return DropdownMenuItem(
+                          value: prioritas,
+                          child: Text(
+                            prioritas,
+                            style: GoogleFonts.poppins(fontSize: 20),
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        prioritasTerpilih = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      fillColor: Color(0xFFA0D7C8),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: 
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
                   ),
                   SizedBox(height: 10),

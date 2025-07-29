@@ -313,7 +313,7 @@ class HomeScreen extends StatelessWidget {
               },
               icon: Icon(
                 Icons.home,
-                color: Colors.black,
+                color: Color(0xFF584A4A),
                 size: 45,
               ),
             ),
@@ -329,7 +329,7 @@ class HomeScreen extends StatelessWidget {
               },
               icon: Icon(
                 Icons.person,
-                color: Colors.black,
+                color: Color(0xFF584A4A),
                 size: 45,
               ),
             )
