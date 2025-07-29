@@ -16,12 +16,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     'Healthy',
     'Shopping',
     'Work',
-    'Lainnya'
+    'Other'
   ];
   final List<String> listPrioritas = [
-    'Tinggi',
-    'Sedang',
-    'Rendah',
+    'High',
+    'Mid',
+    'Low',
   ];
   String? kategoriTerpilih;
   String? prioritasTerpilih;
@@ -78,6 +78,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           style: GoogleFonts.poppins(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
+                            color: Color(0xFF584A4A),
                           ),
                         ),
                       ],
@@ -90,6 +91,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
             SizedBox(height: 10),
 
+            // Form Code
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
@@ -101,8 +103,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       Text(
                         "Task Title",
                         style: GoogleFonts.poppins(
-                          fontSize: 25,
+                          fontSize: 24,
                           fontWeight: FontWeight.w700,
+                          color: Color(0xFF584A4A),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -112,7 +115,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         ),
                         decoration: InputDecoration(
                           hintText: "Input your task title",
-                          hintStyle: GoogleFonts.poppins(fontSize: 25),
+                          hintStyle: GoogleFonts.poppins(fontSize: 20, color: Color(0xFF584A4A),),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
@@ -128,8 +131,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       Text(
                         "Category",
                         style: GoogleFonts.poppins(
-                          fontSize: 25,
+                          fontSize: 24,
                           fontWeight: FontWeight.w700,
+                          color: Color(0xFF584A4A),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -137,7 +141,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         value: kategoriTerpilih,
                         hint: Text(
                           "Select Category",
-                          style: GoogleFonts.poppins(fontSize: 18),
+                          style: GoogleFonts.poppins(fontSize: 18, color: Color(0xFF584A4A),),
                         ),
                         items: listKategori.map(
                           (String kategori) {
@@ -172,8 +176,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       Text(
                         "Priority",
                         style: GoogleFonts.poppins(
-                          fontSize: 25,
+                          fontSize: 24,
                           fontWeight: FontWeight.w700,
+                          color: Color(0xFF584A4A),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -181,7 +186,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         value: prioritasTerpilih,
                         hint: Text(
                           "Select Priority",
-                          style: GoogleFonts.poppins(fontSize: 18),
+                          style: GoogleFonts.poppins(fontSize: 18, color: Color(0xFF584A4A),),
                         ),
                         items: listPrioritas.map(
                           (String prioritas) {
@@ -223,8 +228,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 Text(
                                   "Date",
                                   style: GoogleFonts.poppins(
-                                    fontSize: 25,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.w700,
+                                    color: Color(0xFF584A4A),
                                   ),
                                 ),
                                 TextField(
@@ -266,8 +272,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 Text(
                                   "Time",
                                   style: GoogleFonts.poppins(
-                                    fontSize: 25,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.w700,
+                                    color: Color(0xFF584A4A),
                                   ),
                                 ),
                                 TextField(
@@ -307,14 +314,16 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       Text(
                         "Notes",
                         style: GoogleFonts.poppins(
-                          fontSize: 25,
+                          fontSize: 24,
                           fontWeight: FontWeight.w700,
+                          color: Color(0xFF584A4A),
                         ),
                       ),
                       SizedBox(height: 10),
                       TextField(
                         style: GoogleFonts.poppins(
-                          fontSize: 25,
+                          fontSize: 24,
+                          color: Color(0xFF584A4A),
                         ),
                         decoration: InputDecoration(
                           hintText: "Input your notes (optional)",
@@ -332,7 +341,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            showTopSnackBar(context, 'Tugas berhasil di simpan!');
+                            showTopSnackBar(context, 'Task Saved Successfully');
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Color(0xFF584A4A),
@@ -344,7 +353,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           ),
                           child: Text(
                             "Save",
-                            style: GoogleFonts.poppins(fontSize: 25),
+                            style: GoogleFonts.poppins(fontSize: 24, color: Color(0xFF584A4A),),
                           ),
                         ),
                       ),

@@ -90,8 +90,17 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                             size: 30,
                           ),
                         ),
-                        title: Text('Mencuci piring'),
-                        subtitle: Text('23 Juli 2025, 19:00'),
+                        title: Text(
+                          'Do The Dishes',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                        subtitle: Text(
+                          '23 Juli 2025, 19:00',
+                          ),
                         trailing: Checkbox(
                           value: fungsiCheckBox,
                           onChanged: (bool? value) {

@@ -21,6 +21,13 @@ class MyProfileScreen extends StatelessWidget {
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +55,16 @@ class MyProfileScreen extends StatelessWidget {
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white),
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 8,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
                           child: Icon(
                             Icons.account_circle_outlined,
                             // color: Colors.black,
@@ -95,46 +111,67 @@ class MyProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 10),
                   Text(
-                    "Edit Profil",
+                    "My Bio",
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF584A4A),
                     ),
                   ),
+                  
+                  const SizedBox(height: 16),
                   Text(
                     "Name",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF584A4A),
                     ),
                   ),
                   SizedBox(height: 10),
-                  
                   Container(
                     width: 400,
-                    height: 40,
+                    height: 50,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 15),
                     decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(15),
+                      color: const Color(0xFFA0D7C8).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    child: Text(
-                      "Richo Ferdinand",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF584A4A),
-                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.person_2_outlined,
+                          color: Color(0xFF584141),
+                          size: 24,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Richo Ferdinand",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  const SizedBox(height: 16),
                   Text(
                     "Bio",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF584A4A),
                     ),
@@ -142,26 +179,45 @@ class MyProfileScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   Container(
                     width: 400,
-                    height: 40,
+                    height: 50,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 15),
                     decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(15),
+                      color: Color(0xFFA0D7C8).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    child: Text(
-                      "Slow Living | Malang",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF584A4A),
-                      ),
-                      ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.description_outlined,
+                          color: Color(0xFF584141),
+                          size: 25,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Slow Living | Malang",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(height: 16),
                   Text(
                     "Birth Date",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF584A4A),
                     ),
@@ -169,26 +225,45 @@ class MyProfileScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   Container(
                     width: 400,
-                    height: 40,
+                    height: 50,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 15),
                     decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(15),
+                      color: Color(0xFFA0D7C8).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5, 
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    child: Text(
-                      "June, 11, 2008",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF584A4A),
-                      ),
-                      ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.calendar_month_outlined,
+                          color: Color(0xFF584141),
+                          size: 25,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "June, 11, 2008",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  const SizedBox(height: 16),
                   Text(
                     "Number Phone",
                     style: GoogleFonts.poppins(
-                      fontSize: 16,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF584A4A),
                     ),
@@ -196,21 +271,39 @@ class MyProfileScreen extends StatelessWidget {
                   SizedBox(height: 10),
                   Container(
                     width: 400,
-                    height: 40,
+                    height: 50,
                     alignment: Alignment.centerLeft,
                     padding: EdgeInsets.only(left: 15),
                     decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(15),
+                      color: Color(0xFFA0D7C8).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
-                    child: Text(
-                      "087878456321",
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF584A4A),
-                      ),
-                      ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.smartphone_outlined,
+                          color: Color(0xFF584141),
+                          size: 25,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "087878456321",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
