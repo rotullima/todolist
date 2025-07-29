@@ -90,263 +90,267 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
             SizedBox(height: 10),
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // TASK TITLE
-                  Text(
-                    "Task Title",
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Input your task title",
-                      hintStyle: GoogleFonts.poppins(fontSize: 25),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      fillColor: Color(0xFFA0D7C8),
-                      filled: true,
-                    ),
-                    maxLines: 2,
-                  ),
-                  SizedBox(height: 10),
-
-                  // KATEGORI
-                  Text(
-                    "Category",
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    value: kategoriTerpilih,
-                    hint: Text(
-                      "Select Category",
-                      style: GoogleFonts.poppins(fontSize: 18),
-                    ),
-                    items: listKategori.map(
-                      (String kategori) {
-                        return DropdownMenuItem(
-                          value: kategori,
-                          child: Text(
-                            kategori,
-                            style: GoogleFonts.poppins(fontSize: 20),
-                          ),
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        kategoriTerpilih = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      fillColor: Color(0xFFA0D7C8),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-
-                  // PRIORITAS
-                  Text(
-                    "Priority",
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    value: prioritasTerpilih,
-                    hint: Text(
-                      "Select Priority",
-                      style: GoogleFonts.poppins(fontSize: 18),
-                    ),
-                    items: listPrioritas.map(
-                      (String prioritas) {
-                        return DropdownMenuItem(
-                          value: prioritas,
-                          child: Text(
-                            prioritas,
-                            style: GoogleFonts.poppins(fontSize: 20),
-                          ),
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        prioritasTerpilih = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      fillColor: Color(0xFFA0D7C8),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: 
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-
-                  // DATE AND TIME
-                  Row(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Date",
-                              style: GoogleFonts.poppins(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            TextField(
-                              readOnly: true,
-                              controller:
-                                  TextEditingController(text: formatTanggal),
-                              decoration: InputDecoration(
-                                fillColor: Color(0xFFA0D7C8),
-                                filled: true,
-                                suffixIcon: Icon(Icons.calendar_month),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                              onTap: () async {
-                                final DateTime? terpilih = await showDatePicker(
-                                  context: context,
-                                  initialDate:
-                                      tanggalTerpilih ?? DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2100),
-                                );
-                                if (terpilih != null) {
-                                  setState(() {
-                                    tanggalTerpilih = terpilih;
-                                  });
-                                }
-                              },
-                            ),
-                          ],
+                      // TASK TITLE
+                      Text(
+                        "Task Title",
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Time",
-                              style: GoogleFonts.poppins(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            TextField(
-                              readOnly: true,
-                              controller:
-                                  TextEditingController(text: formatWaktu),
-                              decoration: InputDecoration(
-                                fillColor: Color(0xFFA0D7C8),
-                                filled: true,
-                                suffixIcon: Icon(Icons.access_time),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                              onTap: () async {
-                                final TimeOfDay? terpilih =
-                                    await showTimePicker(
-                                  context: context,
-                                  initialTime: waktuTerpilih ?? TimeOfDay.now(),
-                                );
-                                if (terpilih != null) {
-                                  setState(() {
-                                    waktuTerpilih = terpilih;
-                                  });
-                                }
-                              },
-                            ),
-                          ],
+                      SizedBox(height: 10),
+                      TextField(
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
                         ),
-                      )
+                        decoration: InputDecoration(
+                          hintText: "Input your task title",
+                          hintStyle: GoogleFonts.poppins(fontSize: 25),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          fillColor: Color(0xFFA0D7C8),
+                          filled: true,
+                        ),
+                        maxLines: 2,
+                      ),
+                      SizedBox(height: 10),
+                
+                      // KATEGORI
+                      Text(
+                        "Category",
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField<String>(
+                        value: kategoriTerpilih,
+                        hint: Text(
+                          "Select Category",
+                          style: GoogleFonts.poppins(fontSize: 18),
+                        ),
+                        items: listKategori.map(
+                          (String kategori) {
+                            return DropdownMenuItem(
+                              value: kategori,
+                              child: Text(
+                                kategori,
+                                style: GoogleFonts.poppins(fontSize: 20),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            kategoriTerpilih = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Color(0xFFA0D7C8),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                
+                      // PRIORITAS
+                      Text(
+                        "Priority",
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField<String>(
+                        value: prioritasTerpilih,
+                        hint: Text(
+                          "Select Priority",
+                          style: GoogleFonts.poppins(fontSize: 18),
+                        ),
+                        items: listPrioritas.map(
+                          (String prioritas) {
+                            return DropdownMenuItem(
+                              value: prioritas,
+                              child: Text(
+                                prioritas,
+                                style: GoogleFonts.poppins(fontSize: 20),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            prioritasTerpilih = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Color(0xFFA0D7C8),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: 
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                
+                      // DATE AND TIME
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Date",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                TextField(
+                                  readOnly: true,
+                                  controller:
+                                      TextEditingController(text: formatTanggal),
+                                  decoration: InputDecoration(
+                                    fillColor: Color(0xFFA0D7C8),
+                                    filled: true,
+                                    suffixIcon: Icon(Icons.calendar_month),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    final DateTime? terpilih = await showDatePicker(
+                                      context: context,
+                                      initialDate:
+                                          tanggalTerpilih ?? DateTime.now(),
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(2100),
+                                    );
+                                    if (terpilih != null) {
+                                      setState(() {
+                                        tanggalTerpilih = terpilih;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Time",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                TextField(
+                                  readOnly: true,
+                                  controller:
+                                      TextEditingController(text: formatWaktu),
+                                  decoration: InputDecoration(
+                                    fillColor: Color(0xFFA0D7C8),
+                                    filled: true,
+                                    suffixIcon: Icon(Icons.access_time),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    final TimeOfDay? terpilih =
+                                        await showTimePicker(
+                                      context: context,
+                                      initialTime: waktuTerpilih ?? TimeOfDay.now(),
+                                    );
+                                    if (terpilih != null) {
+                                      setState(() {
+                                        waktuTerpilih = terpilih;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                
+                      // NOTES
+                      SizedBox(height: 10),
+                      Text(
+                        "Notes",
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        style: GoogleFonts.poppins(
+                          fontSize: 25,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: "Input your notes (optional)",
+                          hintStyle: GoogleFonts.poppins(fontSize: 20),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          fillColor: Color(0xFFA0D7C8),
+                          filled: true,
+                        ),
+                        maxLines: 6,
+                      ),
+                      SizedBox(height: 35),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showTopSnackBar(context, 'Tugas berhasil di simpan!');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Color(0xFF584A4A),
+                            backgroundColor: Color(0xFFA0D7C8),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                          ),
+                          child: Text(
+                            "Save",
+                            style: GoogleFonts.poppins(fontSize: 25),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-
-                  // NOTES
-                  SizedBox(height: 10),
-                  Text(
-                    "Notes",
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Input your notes (optional)",
-                      hintStyle: GoogleFonts.poppins(fontSize: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      fillColor: Color(0xFFA0D7C8),
-                      filled: true,
-                    ),
-                    maxLines: 6,
-                  ),
-                  SizedBox(height: 35),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showTopSnackBar(context, 'Tugas berhasil di simpan!');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xFF584A4A),
-                        backgroundColor: Color(0xFFA0D7C8),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
-                      ),
-                      child: Text(
-                        "Save",
-                        style: GoogleFonts.poppins(fontSize: 25),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             )
           ],
