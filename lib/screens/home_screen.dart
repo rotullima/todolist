@@ -20,7 +20,11 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               decoration: const BoxDecoration(
-                color: Color(0xFFA0D7C8),
+                gradient: LinearGradient(
+                  colors: [Color(0xFFA0D7C8), Color(0xFFA0C7D7)],
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
@@ -32,7 +36,16 @@ class HomeScreen extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
                     child: Icon(
                       Icons.account_circle_outlined,
                       // color: Colors.black,
@@ -90,6 +103,7 @@ class HomeScreen extends StatelessWidget {
                         color: Color(0xFF584A4A),
                       ),
                     ),
+                  
                     SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
@@ -105,6 +119,13 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Color(0xFFA0D7C8),
                           borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Row(
                           children: [
@@ -112,8 +133,17 @@ class HomeScreen extends StatelessWidget {
                               width: 70,
                               height: 70,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle, color: Colors.white),
-                              child: Icon(Icons.schedule, size: 61),
+                                  shape: BoxShape.circle, 
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                  ),
+                              child: Icon(Icons.schedule, size: 60),
                             ),
                             SizedBox(width: 12),
                             Column(
@@ -158,6 +188,13 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Color(0xFFA0D7C8),
                           borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: Row(
                           children: [
@@ -165,8 +202,17 @@ class HomeScreen extends StatelessWidget {
                               width: 70,
                               height: 70,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle, color: Colors.white),
-                              child: Icon(Icons.check_circle_outline, size: 61),
+                                  shape: BoxShape.circle, 
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                  ),
+                              child: Icon(Icons.check_circle_outline, size: 60),
                             ),
                             SizedBox(width: 12),
                             Column(
@@ -203,6 +249,13 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Color(0xFFA0D7C8),
                         borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: Row(
                         children: [
@@ -226,7 +279,7 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   child: Icon(
                                     Icons.calendar_month,
-                                    size: 61,
+                                    size: 60,
                                   ),
                                 ),
                                 SizedBox(width: 12),
@@ -258,6 +311,13 @@ class HomeScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Color(0xFFA0D7C8),
                   borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Text(
                   "Terima Kasih sudah menjadi manusia \nbertanggung jawab\n"

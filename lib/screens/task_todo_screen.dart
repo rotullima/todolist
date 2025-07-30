@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:projek2_aplikasi_todolist/screens/task_done_screen.dart';
 
 class TaskTodoScreen extends StatefulWidget {
@@ -74,48 +76,84 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                 padding: const EdgeInsets.all(30),
                 child: ListView(
                   children: [
-                    Card(
-                      color: Color(0xFFA0D7C8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                    Slidable(
+                      key: const ValueKey(1),
+                      endActionPane: ActionPane(
+                        motion: const DrawerMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.question,
+                                animType: AnimType.bottomSlide,
+                                title: "Confirm Delete Data",
+                                desc: "Are You Sure You Want To Delete Data?",
+                                showCloseIcon: true,
+                                btnOkOnPress: () {
+                                  Future.delayed(Duration(milliseconds: 300),
+                                      () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Data Sudah Terhapus"),
+                                        backgroundColor: Color(0xFF15FF00),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  });
+                                },
+                                btnCancelOnPress: () {},
+                              ).show();
+                            },
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ],
                       ),
-                      child: ListTile(
-                        leading: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white),
-                          child: Icon(
-                            Icons.cleaning_services,
-                            size: 30,
-                          ),
+                      child: Card(
+                        color: const Color(0xFFA0D7C8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        title: Text(
-                          'Do The Dishes',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF584A4A),
+                        child: ListTile(
+                          leading: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child:
+                                const Icon(Icons.cleaning_services, size: 30),
                           ),
-                        ),
-                        subtitle: Text(
-                          '23 Juli 2025, 19:00',
+                          title: Text(
+                            'Do The Dishes',
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF584A4A),
+                            ),
                           ),
-                        trailing: Checkbox(
-                          value: fungsiCheckBox,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              fungsiCheckBox = value ?? false;
-                            });
-                            if (value == true) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const TaskDoneScreen(),
-                                ),
-                              );
-                            }
-                          },
+                          subtitle: const Text('23 Juli 2025, 19:00'),
+                          trailing: Checkbox(
+                            value: fungsiCheckBox,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                fungsiCheckBox = value ?? false;
+                              });
+                              if (value == true) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const TaskDoneScreen(),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
