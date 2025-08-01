@@ -20,10 +20,17 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    offset: Offset(0, 4),
+                  ),
+                ],
                 gradient: LinearGradient(
                   colors: [Color(0xFFA0D7C8), Color(0xFFA0C7D7)],
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
                 ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
@@ -103,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                         color: Color(0xFF584A4A),
                       ),
                     ),
-                  
+
                     SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
@@ -133,16 +140,16 @@ class HomeScreen extends StatelessWidget {
                               width: 70,
                               height: 70,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle, 
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 8,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 8,
+                                    offset: Offset(0, 4),
                                   ),
+                                ],
+                              ),
                               child: Icon(Icons.schedule, size: 60),
                             ),
                             SizedBox(width: 12),
@@ -202,16 +209,16 @@ class HomeScreen extends StatelessWidget {
                               width: 70,
                               height: 70,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle, 
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 8,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    blurRadius: 8,
+                                    offset: Offset(0, 4),
                                   ),
+                                ],
+                              ),
                               child: Icon(Icons.check_circle_outline, size: 60),
                             ),
                             SizedBox(width: 12),

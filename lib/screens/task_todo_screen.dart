@@ -26,6 +26,11 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFA0D7C8), Color(0xFFA0C7D7)],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                ),
                 color: Color(0xFFA0D7C8),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),

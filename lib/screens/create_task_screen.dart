@@ -56,7 +56,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               decoration: const BoxDecoration(
-                color: Color(0xFFA0D7C8),
+                gradient: LinearGradient(
+                  colors: [Color(0xFFA0D7C8), Color(0xFFA0C7D7)],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
@@ -115,7 +119,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         ),
                         decoration: InputDecoration(
                           hintText: "Input your task title",
-                          hintStyle: GoogleFonts.poppins(fontSize: 20, color: Color(0xFF584A4A),),
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 20,
+                            color: Color(0xFF584A4A),
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
@@ -126,7 +133,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         maxLines: 2,
                       ),
                       SizedBox(height: 10),
-                
                       // KATEGORI
                       Text(
                         "Category",
@@ -141,7 +147,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         value: kategoriTerpilih,
                         hint: Text(
                           "Select Category",
-                          style: GoogleFonts.poppins(fontSize: 18, color: Color(0xFF584A4A),),
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            color: Color(0xFF584A4A),
+                          ),
                         ),
                         items: listKategori.map(
                           (String kategori) {
@@ -171,7 +180,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         ),
                       ),
                       SizedBox(height: 10),
-                
+
                       // PRIORITAS
                       Text(
                         "Priority",
@@ -186,7 +195,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         value: prioritasTerpilih,
                         hint: Text(
                           "Select Priority",
-                          style: GoogleFonts.poppins(fontSize: 18, color: Color(0xFF584A4A),),
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            color: Color(0xFF584A4A),
+                          ),
                         ),
                         items: listPrioritas.map(
                           (String prioritas) {
@@ -211,12 +223,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: 
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         ),
                       ),
                       SizedBox(height: 10),
-                
+
                       // DATE AND TIME
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,8 +247,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 ),
                                 TextField(
                                   readOnly: true,
-                                  controller:
-                                      TextEditingController(text: formatTanggal),
+                                  controller: TextEditingController(
+                                      text: formatTanggal),
                                   decoration: InputDecoration(
                                     fillColor: Color(0xFFA0D7C8),
                                     filled: true,
@@ -247,7 +259,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                     ),
                                   ),
                                   onTap: () async {
-                                    final DateTime? terpilih = await showDatePicker(
+                                    final DateTime? terpilih =
+                                        await showDatePicker(
                                       context: context,
                                       initialDate:
                                           tanggalTerpilih ?? DateTime.now(),
@@ -294,7 +307,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                     final TimeOfDay? terpilih =
                                         await showTimePicker(
                                       context: context,
-                                      initialTime: waktuTerpilih ?? TimeOfDay.now(),
+                                      initialTime:
+                                          waktuTerpilih ?? TimeOfDay.now(),
                                     );
                                     if (terpilih != null) {
                                       setState(() {
@@ -308,7 +322,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           )
                         ],
                       ),
-                
+
                       // NOTES
                       SizedBox(height: 10),
                       Text(
@@ -346,14 +360,17 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Color(0xFF584A4A),
                             backgroundColor: Color(0xFFA0D7C8),
-                            padding:
-                                EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 5),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)),
                           ),
                           child: Text(
                             "Save",
-                            style: GoogleFonts.poppins(fontSize: 24, color: Color(0xFF584A4A),),
+                            style: GoogleFonts.poppins(
+                              fontSize: 24,
+                              color: Color(0xFF584A4A),
+                            ),
                           ),
                         ),
                       ),
