@@ -82,202 +82,157 @@ class SplashScreen extends StatelessWidget {
                                     return Wrap(
                                       children: [
                                         Container(
-                                            color: Colors.transparent,
                                             child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Color(0xFFA0D7C8),
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  40),
-                                                          topLeft:
-                                                              Radius.circular(
-                                                                  40))),
-                                              child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: 50),
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 25,
-                                                    ),
-                                                    Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Column(
-                                                          children: [
-                                                            Text(
-                                                              'Hello...',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                fontSize: 20,
-                                                                color: Color(
-                                                                    0xFF584A4A),
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              'Register',
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                fontSize: 30,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Color(
-                                                                    0xFF584A4A),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Spacer(),
-                                                        Center(
-                                                          child: InkWell(
-                                                            onTap: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Icon(
-                                                              Icons
-                                                                  .cancel_outlined,
-                                                              size: 40,
-                                                              color: Colors.red,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 25,
-                                                    ),
-                                                    TextField(
-                                                      decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              hintText:
-                                                                  "infoexample.com",
-                                                              labelText:
-                                                                  "username/email",
-                                                              suffixIcon:
-                                                                  InkWell(
-                                                                onTap: () {},
-                                                                child: Icon(Icons
-                                                                    .visibility_outlined),
-                                                              )),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                    TextField(
-                                                      decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              hintText:
-                                                                  "course",
-                                                              labelText:
-                                                                  "course",
-                                                              suffixIcon:
-                                                                  InkWell(
-                                                                onTap: () {},
-                                                                child: Icon(Icons
-                                                                    .visibility_outlined),
-                                                              )),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                      ),
-                                                      TextField(
-                                                      decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              hintText:
-                                                                  "password",
-                                                              labelText:
-                                                                  "password",
-                                                              suffixIcon:
-                                                                  InkWell(
-                                                                onTap: () {},
-                                                                child: Icon(Icons
-                                                                    .visibility_outlined),
-                                                              )),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,),
-                                                      TextField(
-                                                      decoration:
-                                                          InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                              hintText:
-                                                                  "confirm password",
-                                                              labelText:
-                                                                  "confirm password",
-                                                              suffixIcon:
-                                                                  InkWell(
-                                                                onTap: () {},
-                                                                child: Icon(Icons
-                                                                    .visibility_outlined),
-                                                              )),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          Navigator.push(
-                                                            context, 
-                                                            MaterialPageRoute(
-                                                              builder: (context) => const HomeScreen(),
-                                                              ),
-                                                            );
-                                                        },
-                                                      
-                                                      child: Container(
-                                                        padding: const EdgeInsets.symmetric(
-                                                          horizontal: 35, vertical: 15 
-                                                        ),
-                                                        decoration: const BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                                                        ),
-                                                        child: Text(
-                                                          'Register',
-                                                          style: GoogleFonts.poppins(
-                                                            fontSize: 18,
-                                                            fontWeight: FontWeight.w600,
-                                                            color: Color(0xFF584A4A),
-                                                          ),
-                                                        ),
-                                                      )
-                                                      ),
-                                                  ],
+                                          decoration: BoxDecoration(
+                                              color: Color(0xFFA0D7C8),
+                                              borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(30),
+                                                  topLeft:
+                                                      Radius.circular(30))),
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 50),
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 25,
                                                 ),
-                                              ),
-                                            ))
+                                                Text(
+                                                  'Create Account',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFF584A4A),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 25,
+                                                ),
+                                                TextField(
+                                                  decoration: InputDecoration(
+                                                      labelStyle: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 30.0)),
+                                                      hintText:
+                                                          "infoexample.com",
+                                                      labelText:
+                                                          "username/email",
+                                                      suffixIcon: InkWell(
+                                                        onTap: () {},
+                                                        child: Icon(Icons
+                                                            .visibility_outlined),
+                                                      )),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                TextField(
+                                                  decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      hintText: "course",
+                                                      labelText: "course",
+                                                      suffixIcon: InkWell(
+                                                        onTap: () {},
+                                                        child: Icon(Icons
+                                                            .visibility_outlined),
+                                                      )),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                TextField(
+                                                  decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      hintText: "password",
+                                                      labelText: "password",
+                                                      suffixIcon: InkWell(
+                                                        onTap: () {},
+                                                        child: Icon(Icons
+                                                            .visibility_outlined),
+                                                      )),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                TextField(
+                                                  decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      hintText:
+                                                          "confirm password",
+                                                      labelText:
+                                                          "confirm password",
+                                                      suffixIcon: InkWell(
+                                                        onTap: () {},
+                                                        child: Icon(Icons
+                                                            .visibility_outlined),
+                                                      )),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const HomeScreen(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 35,
+                                                          vertical: 15),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20)),
+                                                      ),
+                                                      child: Text(
+                                                        'Register',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color:
+                                                              Color(0xFF584A4A),
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ],
+                                            ),
+                                          ),
+                                        ))
                                       ],
                                     );
                                   },
