@@ -51,28 +51,26 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
   void showDeleteDialog(int index) {
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.question, //Tipe dialog pertanyaan
-      animType: AnimType.bottomSlide, //Animasi muncul dari bawah
-      title: "Confirm Delete Data", //Judul Dialog
-      desc: "Are You Sure You Want To Delete Data?", //Isi deskripsi dialog
-      showCloseIcon: true, //Tampilan tombol silang
+      dialogType: DialogType.question, 
+      animType: AnimType.bottomSlide, 
+      title: "Confirm Delete Data", 
+      desc: "Are You Sure You Want To Delete Data?", 
+      showCloseIcon: true, 
       btnOkOnPress: () {
-        //jika OK ditekan, hapus item dan tampilkan snackbar
         setState(() {
-          tasks.removeAt(index); // hapus data dari daftar
+          tasks.removeAt(index); 
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              "Data Sudah Terhapus",
-               ), //pesan notifikasi
+              "Data Sudah Terhapus"), 
             backgroundColor: Color(0xFF15FF00),
-            duration: Duration(seconds: 2), //lama tampil snackbar
+            duration: Duration(seconds: 2), 
           ),
         );
       },
-      btnCancelOnPress: () {}, // jika ditekan cancel ,tidak terjadi ap ap
-    ).show(); //tampilkan dialog
+      btnCancelOnPress: () {}, 
+    ).show(); 
   }
 
   @override
