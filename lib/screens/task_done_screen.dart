@@ -16,7 +16,9 @@ class TaskDoneScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               decoration: const BoxDecoration(
-                color: Color(0xFFA0D7C8),
+                gradient: LinearGradient(
+                colors: [Color(0xFFA0D7C8),Color(0xFFA0C7D7)],
+                ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),

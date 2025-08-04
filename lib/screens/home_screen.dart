@@ -22,8 +22,6 @@ class HomeScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFFA0D7C8), Color(0xFFA0C7D7)],
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
                 ),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
