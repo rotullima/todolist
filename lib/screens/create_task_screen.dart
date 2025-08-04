@@ -358,9 +358,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             showTopSnackBar(context, 'Task Saved Successfully');
                           },
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Color(0xFF584A4A),
-                            backgroundColor: Color(0xFFA0D7C8),
-                            padding: EdgeInsets.symmetric(
+                            foregroundColor: const Color(0xFF584A4A),
+                            backgroundColor: const Color(0xFFA0D7C8),
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 5),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)),
