@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
+
+  @override
+  State<MyProfileScreen> createState() => _MyProfileScreen();
+}
+
+class _MyProfileScreen extends State<MyProfileScreen> {
+  DateTime? tanggalTerpilih;
+  TimeOfDay? waktuTerpilih;
+
+  String get formatTanggal {
+    if (tanggalTerpilih == null) return '';
+    return DateFormat('MMMM d,yyyy').format(tanggalTerpilih!);
+  }
+
+  String get formatWaktu {
+    if (waktuTerpilih == null) return '';
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, waktuTerpilih!.hour,
+        waktuTerpilih!.minute);
+    return DateFormat('HH:mm').format(dt);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +142,6 @@ class MyProfileScreen extends StatelessWidget {
                       color: Color(0xFF584A4A),
                     ),
                   ),
-                  
                   const SizedBox(height: 16),
                   Text(
                     "Name",
@@ -223,7 +244,21 @@ class MyProfileScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Container(
+                  GestureDetector(
+                    onTap: () async {
+                      final DateTime? terpilih = await showDatePicker(
+                        context: context,
+                        initialDate: tanggalTerpilih ?? DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+                      if (terpilih != null) {
+                        setState(() {
+                          tanggalTerpilih = terpilih;
+                        });
+                      }
+                    },
+                   child: Container(
                     width: 400,
                     height: 50,
                     alignment: Alignment.centerLeft,
@@ -235,29 +270,28 @@ class MyProfileScreen extends StatelessWidget {
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.3),
                           spreadRadius: 2,
-                          blurRadius: 5, 
+                          blurRadius: 5,
                           offset: Offset(0, 3),
                         ),
                       ],
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.calendar_month_outlined,
-                          color: Color(0xFF584141),
-                          size: 25,
                         ),
-                        const SizedBox(width: 8),
                         Text(
-                          "June, 11, 2008",
+                          formatTanggal.isEmpty ? "Select your birth date" : formatTanggal,
                           style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF584A4A),
                           ),
                         ),
+                       
                       ],
                     ),
+                  ),
                   ),
                   const SizedBox(height: 16),
                   Text(
