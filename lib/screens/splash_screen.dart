@@ -107,66 +107,24 @@ class SplashScreen extends StatelessWidget {
                                             height: 60,
                                             child: TextField(
                                               decoration: InputDecoration(
-                                                labelStyle: TextStyle(
+                                                labelStyle: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
                                                     fontWeight:
                                                         FontWeight.w600),
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  borderSide: BorderSide(
-                                                      color: Colors.white,
-                                                      width: 30.0),
-                                                ),
                                                 hintText: "infoexample.com",
                                                 labelText: "username/email",
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 20),
-                                          SizedBox(
-                                            width: 400,
-                                            height: 60,
-                                            child: TextField(
-                                              decoration: InputDecoration(
-                                                labelStyle: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
+                                                 enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
                                                 ),
-                                                hintText: "course",
-                                                labelText: "course",
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 20),
-                                          SizedBox(
-                                            width: 400,
-                                            height: 60,
-                                            child: TextField(
-                                              decoration: InputDecoration(
-                                                labelStyle: GoogleFonts.poppins(
-                                                    fontSize: 16,
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
                                                     color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                hintText: "password",
-                                                labelText: "password",
-                                                suffixIcon: InkWell(
-                                                  onTap: () {},
-                                                  child: Icon(
-                                                    Icons.visibility_outlined,
-                                                    color: Colors.white,
-                                                    size: 26,
+                                                    width: 3.0,
                                                   ),
                                                 ),
                                               ),
@@ -183,10 +141,72 @@ class SplashScreen extends StatelessWidget {
                                                     fontSize: 16,
                                                     fontWeight:
                                                         FontWeight.w600),
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
+                                                hintText: "course",
+                                                labelText: "course",
+                                                 enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
                                                 ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 20),
+                                          SizedBox(
+                                            width: 400,
+                                            height: 60,
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                labelStyle: GoogleFonts.poppins(
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                hintText: "password",
+                                                labelText: "password",
+                                                suffixIcon: InkWell(
+                                                  onTap: () {},
+                                                  child: Icon(
+                                                    Icons.visibility_outlined,
+                                                    color: Colors.white,
+                                                    size: 26,
+                                                  ),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
+                                              ),
+                                            ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 20),
+                                          SizedBox(
+                                            width: 400,
+                                            height: 60,
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                labelStyle: GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                                 hintText: "confirm password",
                                                 labelText: "confirm password",
                                                 suffixIcon: InkWell(
@@ -195,6 +215,19 @@ class SplashScreen extends StatelessWidget {
                                                     Icons.visibility_outlined,
                                                     color: Colors.white,
                                                     size: 26,
+                                                  ),
+                                                ),
+                                               enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
                                                   ),
                                                 ),
                                               ),
@@ -332,21 +365,29 @@ class SplashScreen extends StatelessWidget {
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                    color: Colors.white,
-                                                    width: 30.0),
-                                              ),
                                               hintText: "username/email",
                                               labelText: "ricko11@gmail.com",
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
+                                                ),
                                             ),
                                           ),
                                         ),
+
                                         SizedBox(
                                           height: 20,
                                         ),
+
                                         SizedBox(
                                           width: 400,
                                           height: 60,
@@ -357,9 +398,11 @@ class SplashScreen extends StatelessWidget {
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w600,
                                               ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
+                                              enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
                                               ),
                                               hintText: "password",
                                               labelText: "12345678",
@@ -371,6 +414,13 @@ class SplashScreen extends StatelessWidget {
                                                   size: 26,
                                                 ),
                                               ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
+                                                ),
                                             ),
                                           ),
                                         ),
