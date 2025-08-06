@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CalenderScreen extends StatefulWidget {
   const CalenderScreen({super.key});
@@ -10,80 +11,274 @@ class CalenderScreen extends StatefulWidget {
 class _CalenderScreenState extends State<CalenderScreen> {
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    final currentDayIndex = now.weekday - 1; // 0-based index (Tue = 2)
+    final days = ['27', '28', '29', '30', '31', '1', '2'];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Today'),
-        leading: const Icon(Icons.arrow_back_ios),
+        title: Text('Today',
+        style: GoogleFonts.poppins(
+          fontSize: 24,
+          color: Color(0xFF584A4A),
+          fontWeight: FontWeight.bold,
+        )
+        ),
+       leading: IconButton(
+       icon: Icon(
+        Icons.arrow_back_ios,
+        size: 24,
+        color: Color(0xFF584A4A),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+      },
+    ),
       ),
+
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Productive Day, Richo',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF584A4A),
+              ),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              '${days[now.weekday - 1]}, ${now.day.toString().padLeft(2, '0')} ${now.month.toString().padLeft(2, '0')} ${now.year}',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              'July, 29 2025',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF584A4A),
+              ),
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(7, (index) {
-                final date = now.subtract(Duration(days: currentDayIndex - index));
-                return Text(
-                  date.day.toString(),
-                  style: TextStyle(
-                    fontWeight: index == currentDayIndex ? FontWeight.bold : FontWeight.normal,
-                    color: index == currentDayIndex ? Colors.black : Colors.grey,
-                  ),
-                );
-              }),
+
+          SizedBox(height: 30,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(7, (index) {
+                  return index == 2
+                  ? CircleAvatar(
+                    backgroundColor: Color(0xFFA0D7C8),
+                    radius: 18.0,
+                    child: Text(
+                      days[index],
+                      style: TextStyle(
+                        fontWeight: index == 2 ? FontWeight.bold : FontWeight.normal,
+                         color: Color(0xFF584A4A),
+                         fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                  : Text(
+                    days[index],
+                    style: TextStyle(
+                      fontWeight: index == 2 ? FontWeight.bold : FontWeight.normal,
+                      color: index == 2 ? Colors.black : Colors.grey,
+                      fontSize: 16,
+                    ),
+                  );
+                }),
+              ),
             ),
-          ),
+
+          SizedBox(height: 20,),
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
-                _buildTaskItem('5:30 am', 'Do the dishes'),
-                _buildTaskItem('6:00 am', 'Run with family'),
-                _buildTaskItem('8:00 am', 'Take a bath'),
-                _buildTaskItem('1:00 pm', 'Meet with friend'),
-                _buildTaskItem('2:45 pm', 'Pray'),
+                Container(
+                  width: 368,
+                  height: 71,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA0D7C8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '5:30 am',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Color(0xFF584A4A),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          'Do the dishes',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Container(
+                  width: 368,
+                  height: 71,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA0D7C8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '6:00 am',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Color(0xFF584A4A),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          'Run with family',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Container(
+                  width: 368,
+                  height: 71,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA0D7C8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '8:00 am',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Color(0xFF584A4A),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          'Take a bath',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Container(
+                  width: 368,
+                  height: 71,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA0D7C8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '1:00 pm',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Color(0xFF584A4A),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          'Meet with friend',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Container(
+                  width: 368,
+                  height: 71,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFA0D7C8),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        '2:45 pm',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: Color(0xFF584A4A),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: Text(
+                          'Pray',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Color(0xFF584A4A),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTaskItem(String time, String task) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: time == '2:45 pm' ? Colors.pink[100] : Colors.teal[100],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Text(
-            time,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(width: 20),
-          Expanded(child: Text(task)),
         ],
       ),
     );

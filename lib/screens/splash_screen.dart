@@ -30,6 +30,14 @@ class SplashScreen extends StatelessWidget {
                     height: 282,
                     decoration: const BoxDecoration(
                       color: Color(0xFFA0D7C8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 4),
+                          blurRadius: 10,
+                          spreadRadius:20,
+                        ),
+                      ],
                     ),
                     child: Center(
                       child: Image.asset(
@@ -48,6 +56,7 @@ class SplashScreen extends StatelessWidget {
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                         color: Color(0xFF584A4A),
+                        
                       ),
                       textAlign: TextAlign.center,
                     ),
