@@ -103,23 +103,134 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Text(
-                          'Slow Living',
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF584A4A),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  elevation: 15,
+                                  child: Container(
+                                    width: 250,
+                                    height: 400,
+                                    padding: EdgeInsets.all(15),
+                                    color: Color(0xFFA0D7C8),
+                                    child: Card(
+                                      color: Color(0xFFA0D7C8),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Edit Profile",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold
+                                              ),
+                                            ),
+                                            SizedBox(height: 20),
+                                        Container(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelStyle: const TextStyle(
+                                                  color: Colors.black12,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
+                                              hintText: "infoexample.com",
+                                              labelText: "username/email",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                    color: Colors.black12,
+                                                    width: 3.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                  color: Colors.black12,
+                                                  width: 3.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 15,),
+                                      Container(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelStyle: const TextStyle(
+                                                  color: Colors.black12,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
+                                              hintText: "infoexample.com",
+                                              labelText: "username/email",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                    color: Colors.black12,
+                                                    width: 3.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                  color: Colors.black12,
+                                                  width: 3.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 15,),
+                                        Container(
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              labelStyle: const TextStyle(
+                                                  color: Colors.black12,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600),
+                                              hintText: "infoexample.com",
+                                              labelText: "username/email",
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                    color: Colors.black12,
+                                                    width: 3.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                borderSide: BorderSide(
+                                                  color: Colors.black12,
+                                                  width: 3.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                          ]
+                                        ),
+                                  ),
+                                  )
+                                );
+                              },
+                            );
+                          },
+                          child: Text(
+                            'Edit Profile',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF584A4A),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Malang',
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF584A4A),
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -258,40 +369,41 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                         });
                       }
                     },
-                   child: Container(
-                    width: 400,
-                    height: 50,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 15),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFA0D7C8).withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 2,
-                          blurRadius: 5,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_month_outlined,
-                        ),
-                        Text(
-                          formatTanggal.isEmpty ? "Select your birth date" : formatTanggal,
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF584A4A),
+                    child: Container(
+                      width: 400,
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 15),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFA0D7C8).withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
                           ),
-                        ),
-                       
-                      ],
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month_outlined,
+                          ),
+                          Text(
+                            formatTanggal.isEmpty
+                                ? "Select your birth date"
+                                : formatTanggal,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF584A4A),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   ),
                   const SizedBox(height: 16),
                   Text(
