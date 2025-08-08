@@ -122,6 +122,7 @@ class SplashScreen extends StatelessWidget {
                                                     fontWeight:
                                                         FontWeight.w600),
                                                 hintText: "infoexample.com",
+                                                hintStyle: TextStyle(color: Colors.white),
                                                 labelText: "username/email",
                                                  enabledBorder: OutlineInputBorder(
                                                   borderRadius: BorderRadius.circular(20),
@@ -151,6 +152,7 @@ class SplashScreen extends StatelessWidget {
                                                     fontWeight:
                                                         FontWeight.w600),
                                                 hintText: "course",
+                                                 hintStyle: TextStyle(color: Colors.white),
                                                 labelText: "course",
                                                  enabledBorder: OutlineInputBorder(
                                                   borderRadius: BorderRadius.circular(20),
@@ -180,6 +182,7 @@ class SplashScreen extends StatelessWidget {
                                                     fontWeight:
                                                         FontWeight.w600),
                                                 hintText: "password",
+                                                 hintStyle: TextStyle(color: Colors.white),
                                                 labelText: "password",
                                                 suffixIcon: InkWell(
                                                   onTap: () {},
@@ -217,6 +220,7 @@ class SplashScreen extends StatelessWidget {
                                                     fontWeight:
                                                         FontWeight.w600),
                                                 hintText: "confirm password",
+                                                 hintStyle: TextStyle(color: Colors.white),
                                                 labelText: "confirm password",
                                                 suffixIcon: InkWell(
                                                   onTap: () {},
@@ -374,8 +378,9 @@ class SplashScreen extends StatelessWidget {
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                               ),
-                                              hintText: "username/email",
-                                              labelText: "ricko11@gmail.com",
+                                              hintText: "ricko11@gmail.com",
+                                              hintStyle: TextStyle(color: Colors.white),
+                                              labelText: "Username/email",
                                               enabledBorder: OutlineInputBorder(
                                                   borderRadius: BorderRadius.circular(20),
                                                   borderSide: BorderSide(
@@ -413,8 +418,9 @@ class SplashScreen extends StatelessWidget {
                                                       color: Colors.white,
                                                       width: 3.0),
                                               ),
-                                              hintText: "password",
-                                              labelText: "12345678",
+                                              hintText: "12345678",
+                                               hintStyle: TextStyle(color: Colors.white),
+                                              labelText: "password",
                                               suffixIcon: InkWell(
                                                 onTap: () {},
                                                 child: Icon(

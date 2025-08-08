@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:projek2_aplikasi_todolist/screens/splash_screen.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
@@ -109,116 +110,255 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                               context: context,
                               builder: (context) {
                                 return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  elevation: 15,
-                                  child: Container(
-                                    width: 250,
-                                    height: 400,
-                                    padding: EdgeInsets.all(15),
-                                    color: Color(0xFFA0D7C8),
-                                    child: Card(
-                                      color: Color(0xFFA0D7C8),
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              "Edit Profile",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold
-                                              ),
-                                            ),
-                                            SizedBox(height: 20),
-                                        Container(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelStyle: const TextStyle(
-                                                  color: Colors.black12,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    elevation: 10,
+                                    backgroundColor: Colors.transparent,
+                                    child: Container(
+                                      width: 250,
+                                      height: 450,
+                                      padding: EdgeInsets.all(15),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFA0D7C8),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              blurRadius: 10,
+                                              offset: Offset(0, 5)),
+                                        ],
+                                      ),
+                                      child: Card(
+                                        color: Color(0xFFA0D7C8),
+                                        child: Column(children: [
+                                          Text(
+                                            "Edit Profile",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          SizedBox(height: 20),
+                                          Container(
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                labelStyle: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                hintText: "azura aulia selly",
+                                                hintStyle: GoogleFonts.poppins(
+                                                  color: Colors.white,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                              hintText: "infoexample.com",
-                                              labelText: "username/email",
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                    color: Colors.black12,
-                                                    width: 3.0),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                  color: Colors.black12,
-                                                  width: 3.0,
+                                                ),
+                                                labelText: "Name",
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-
-                                        SizedBox(height: 15,),
-                                      Container(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelStyle: const TextStyle(
-                                                  color: Colors.black12,
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                labelStyle: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                hintText: "Haji",
+                                                hintStyle: GoogleFonts.poppins(
+                                                  color: Colors.white,
                                                   fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                              hintText: "infoexample.com",
-                                              labelText: "username/email",
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                    color: Colors.black12,
-                                                    width: 3.0),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                  color: Colors.black12,
-                                                  width: 3.0,
+                                                ),
+                                                labelText: "Bio",
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-
-                                        SizedBox(height: 15,),
-                                        Container(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                              labelStyle: const TextStyle(
-                                                  color: Colors.black12,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                              hintText: "infoexample.com",
-                                              labelText: "username/email",
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                    color: Colors.black12,
-                                                    width: 3.0),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                borderSide: BorderSide(
-                                                  color: Colors.black12,
-                                                  width: 3.0,
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                            child: GestureDetector(
+                                              child: TextField(
+                                                readOnly: true,
+                                                controller:
+                                                    TextEditingController(
+                                                        text: formatTanggal),
+                                                onTap: () async {
+                                                  final DateTime? terpilih =
+                                                      await showDatePicker(
+                                                    context: context,
+                                                    initialDate:
+                                                        tanggalTerpilih ??
+                                                            DateTime.now(),
+                                                    firstDate: DateTime(2000),
+                                                    lastDate: DateTime(2100),
+                                                  );
+                                                  if (terpilih != null) {
+                                                    setState(() {
+                                                      tanggalTerpilih =
+                                                          terpilih;
+                                                    });
+                                                  }
+                                                },
+                                                decoration: InputDecoration(
+                                                  labelStyle: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                  hintText: "Select birth date",
+                                                  hintStyle:
+                                                      GoogleFonts.poppins(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                  labelText: "Birth Date",
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    borderSide: BorderSide(
+                                                        color: Colors.white,
+                                                        width: 3.0),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        )
-                                          ]
-                                        ),
-                                  ),
-                                  )
-                                );
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                labelStyle: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                                hintText: "081252466822",
+                                                hintStyle: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                ),
+                                                labelText: "Number Phone",
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.white,
+                                                      width: 3.0),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 3.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Container(
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      " Profile saved succesfully!",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                    backgroundColor:
+                                                        Color(0xFF4CAF50),
+                                                    duration:
+                                                        Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Color(0xFF4CAF50),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 30,
+                                                  vertical: 10,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                "Save",
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          )
+                                        ]),
+                                      ),
+                                    ));
                               },
                             );
                           },
@@ -228,6 +368,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: Color(0xFF584A4A),
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         )
@@ -355,54 +496,40 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () async {
-                      final DateTime? terpilih = await showDatePicker(
-                        context: context,
-                        initialDate: tanggalTerpilih ?? DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      );
-                      if (terpilih != null) {
-                        setState(() {
-                          tanggalTerpilih = terpilih;
-                        });
-                      }
-                    },
-                    child: Container(
-                      width: 400,
-                      height: 50,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(left: 15),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFA0D7C8).withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
+                  Container(
+                    width: 400,
+                    height: 50,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.only(left: 15),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFA0D7C8).withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.calendar_month_outlined,
+                          color: Color(0xFF584141),
+                          size: 25,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "22 April 2008",
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF584A4A),
                           ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.calendar_month_outlined,
-                          ),
-                          Text(
-                            formatTanggal.isEmpty
-                                ? "Select your birth date"
-                                : formatTanggal,
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xFF584A4A),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -452,6 +579,82 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            SizedBox(height: 10),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  // Aksi log out
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("Log Out",
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 19,
+                              fontWeight: FontWeight.w700)),
+                      content: Text("Are you sure you want to log out?",
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500)),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text("Cancel",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => SplashScreen()),
+                              (Route<dynamic> route) => false,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Logged out successfully.",
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500)),
+                                backgroundColor: Colors.redAccent,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          },
+                          child: Text("Log Out",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.red,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                icon: Icon(Icons.logout, color: Colors.white),
+                label: Text(
+                  "Log Out",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                ),
               ),
             ),
           ],
