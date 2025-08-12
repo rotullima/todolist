@@ -5,17 +5,19 @@ import 'task_todo_screen.dart';
 import 'task_done_screen.dart';
 import 'my_profile_screen.dart';
 import 'create_task_screen.dart';
+import 'package:projek2_aplikasi_todolist/services/auth_services.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authServices = AuthServices();
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: [ 
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
@@ -72,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Richo Ferdinand',
+                        'ja',
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w800,
                           fontSize: 24,

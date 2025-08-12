@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projek2_aplikasi_todolist/services/auth_services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen.dart';
 
@@ -66,7 +65,7 @@ class SplashScreen extends StatelessWidget {
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFFA0D7C8),
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(30),
