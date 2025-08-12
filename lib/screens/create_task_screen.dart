@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -10,37 +11,169 @@ class CreateTaskScreen extends StatefulWidget {
 }
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
-  final List<String> listKategori = [
-    'Religius',
-    'Personal',
-    'Healthy',
-    'Shopping',
-    'Work',
-    'Other'
-  ];
-  final List<String> listPrioritas = [
-    'High',
-    'Mid',
-    'Low',
-  ];
-  String? kategoriTerpilih;
-  String? prioritasTerpilih;
+  // Controllers untuk TextField
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
 
+  // Variabel untuk dropdown dan date/time
+  Map<String, String> mapKategori = {}; // key: name, value: id (UUID)
+  Map<String, String> mapPrioritas = {}; // key: name, value: id (UUID)
+  String? kategoriNameTerpilih;
+  String? prioritasNameTerpilih;
   DateTime? tanggalTerpilih;
   TimeOfDay? waktuTerpilih;
 
+  // Format tanggal dan waktu
   String get formatTanggal {
     if (tanggalTerpilih == null) return '';
-    return DateFormat('MMMM d, yyyy')
-        .format(tanggalTerpilih!); // Format cth: July 27, 2025
+    return DateFormat('MMMM d, yyyy').format(tanggalTerpilih!);
   }
 
   String get formatWaktu {
     if (waktuTerpilih == null) return '';
-    final now = DateTime.now();
-    final dt = DateTime(now.year, now.month, now.day, waktuTerpilih!.hour,
-        waktuTerpilih!.minute);
-    return DateFormat('HH:mm').format(dt); // Format cth: 12:00
+    return waktuTerpilih!.format(context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCategories();
+    _fetchPriorities();
+    _dateController.text = formatTanggal;
+    _timeController.text = formatWaktu;
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _notesController.dispose();
+    _dateController.dispose();
+    _timeController.dispose();
+    super.dispose();
+  }
+
+  // Fetch categories dari Supabase
+  Future<void> _fetchCategories() async {
+    try {
+      final response =
+          await Supabase.instance.client.from('categories').select('id, name');
+      setState(() {
+        mapKategori = {
+          for (var cat in response) cat['name']: cat['id'].toString()
+        };
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load categories: $e')),
+      );
+    }
+  }
+
+  // Fetch priorities dari Supabase
+  Future<void> _fetchPriorities() async {
+    try {
+      final response =
+          await Supabase.instance.client.from('priorities').select('id, name');
+      setState(() {
+        mapPrioritas = {
+          for (var pri in response) pri['name']: pri['id'].toString()
+        };
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load priorities: $e')),
+      );
+    }
+  }
+
+  // Validasi input sebelum save
+  bool _validateTask() {
+    if (_titleController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Task title is required')),
+      );
+      return false;
+    }
+    if (kategoriNameTerpilih == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a category')),
+      );
+      return false;
+    }
+    if (prioritasNameTerpilih == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a priority')),
+      );
+      return false;
+    }
+    if (tanggalTerpilih == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a date')),
+      );
+      return false;
+    }
+    return true; // Waktu opsional, jadi tidak divalidasi
+  }
+
+  // Simpan task ke Supabase
+  Future<void> _saveTask() async {
+    if (!_validateTask()) return;
+
+    // Ambil ID dari map
+    final categoryId = mapKategori[kategoriNameTerpilih];
+    final priorityId = mapPrioritas[prioritasNameTerpilih];
+
+    // Pastikan user sudah login
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please login to save task')),
+      );
+      return;
+    }
+
+    try {
+      // Loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Insert ke tabel tasks
+      await Supabase.instance.client.from('tasks').insert({
+        'user_id': user.id,
+        'title': _titleController.text,
+        'category_id': categoryId,
+        'priority_id': priorityId,
+        'due_date': tanggalTerpilih!.toIso8601String().split('T')[0],
+        'due_time': waktuTerpilih?.format(context),
+        'notes': _notesController.text.isEmpty ? null : _notesController.text,
+        'completed': false, // Tambah ini
+      });
+
+      // Tutup loading
+      Navigator.pop(context); // Close loading dialog
+
+      // Tampilkan snackbar sukses
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Task Saved Successfully'),
+          backgroundColor: Color(0xFF5DEE4F),
+        ),
+      );
+
+      // Kembali ke halaman sebelumnya
+      Navigator.pop(context);
+    } catch (e) {
+      // Tutup loading jika error
+      Navigator.pop(context); // Close loading dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save task: $e')),
+      );
+    }
   }
 
   @override
@@ -51,7 +184,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Bagian atas (judul + tanggal)
+            // Header
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
@@ -69,10 +202,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               child: Row(
                 children: [
                   IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.arrow_back_ios_new_rounded)),
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +214,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           style: GoogleFonts.poppins(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF584A4A),
+                            color: const Color(0xFF584A4A),
                           ),
                         ),
                       ],
@@ -92,144 +224,140 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
 
-            SizedBox(height: 10),
-
-            // Form Code
+            // Form
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // TASK TITLE
+                      // Task Title
                       Text(
                         "Task Title",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF584A4A),
+                          color: const Color(0xFF584A4A),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextField(
-                        style: GoogleFonts.poppins(
-                          fontSize: 25,
-                        ),
+                        controller: _titleController,
+                        style: GoogleFonts.poppins(fontSize: 18),
                         decoration: InputDecoration(
                           hintText: "Input your task title",
                           hintStyle: GoogleFonts.poppins(
-                            fontSize: 20,
-                            color: Color(0xFF584A4A),
+                            fontSize: 16,
+                            color: const Color(0xFF584A4A),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          fillColor: Color(0xFFA0D7C8),
+                          fillColor: const Color(0xFFA0D7C8),
                           filled: true,
                         ),
                         maxLines: 2,
                       ),
-                      SizedBox(height: 10),
-                      // KATEGORI
+                      const SizedBox(height: 10),
+
+                      // Category
                       Text(
                         "Category",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF584A4A),
+                          color: const Color(0xFF584A4A),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       DropdownButtonFormField<String>(
-                        value: kategoriTerpilih,
+                        value: kategoriNameTerpilih,
                         hint: Text(
                           "Select Category",
                           style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            color: Color(0xFF584A4A),
+                            fontSize: 16,
+                            color: const Color(0xFF584A4A),
                           ),
                         ),
-                        items: listKategori.map(
-                          (String kategori) {
-                            return DropdownMenuItem(
-                              value: kategori,
-                              child: Text(
-                                kategori,
-                                style: GoogleFonts.poppins(fontSize: 20),
-                              ),
-                            );
-                          },
-                        ).toList(),
+                        items: mapKategori.keys.map((String name) {
+                          return DropdownMenuItem(
+                            value: name,
+                            child: Text(
+                              name,
+                              style: GoogleFonts.poppins(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            kategoriTerpilih = value;
+                            kategoriNameTerpilih = value;
                           });
                         },
                         decoration: InputDecoration(
-                          fillColor: Color(0xFFA0D7C8),
+                          fillColor: const Color(0xFFA0D7C8),
                           filled: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-                      // PRIORITAS
+                      // Priority
                       Text(
                         "Priority",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF584A4A),
+                          color: const Color(0xFF584A4A),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       DropdownButtonFormField<String>(
-                        value: prioritasTerpilih,
+                        value: prioritasNameTerpilih,
                         hint: Text(
                           "Select Priority",
                           style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            color: Color(0xFF584A4A),
+                            fontSize: 16,
+                            color: const Color(0xFF584A4A),
                           ),
                         ),
-                        items: listPrioritas.map(
-                          (String prioritas) {
-                            return DropdownMenuItem(
-                              value: prioritas,
-                              child: Text(
-                                prioritas,
-                                style: GoogleFonts.poppins(fontSize: 20),
-                              ),
-                            );
-                          },
-                        ).toList(),
+                        items: mapPrioritas.keys.map((String name) {
+                          return DropdownMenuItem(
+                            value: name,
+                            child: Text(
+                              name,
+                              style: GoogleFonts.poppins(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            prioritasTerpilih = value;
+                            prioritasNameTerpilih = value;
                           });
                         },
                         decoration: InputDecoration(
-                          fillColor: Color(0xFFA0D7C8),
+                          fillColor: const Color(0xFFA0D7C8),
                           filled: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
-                      // DATE AND TIME
+                      // Date and Time
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -240,26 +368,26 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 Text(
                                   "Date",
                                   style: GoogleFonts.poppins(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xFF584A4A),
+                                    color: const Color(0xFF584A4A),
                                   ),
                                 ),
                                 TextField(
                                   readOnly: true,
-                                  controller: TextEditingController(
-                                      text: formatTanggal),
+                                  controller: _dateController,
                                   decoration: InputDecoration(
-                                    fillColor: Color(0xFFA0D7C8),
+                                    fillColor: const Color(0xFFA0D7C8),
                                     filled: true,
-                                    suffixIcon: Icon(Icons.calendar_month),
+                                    suffixIcon:
+                                        const Icon(Icons.calendar_month),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide.none,
                                     ),
                                   ),
                                   onTap: () async {
-                                    final DateTime? terpilih =
+                                    final DateTime? picked =
                                         await showDatePicker(
                                       context: context,
                                       initialDate:
@@ -267,9 +395,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                       firstDate: DateTime(2000),
                                       lastDate: DateTime(2100),
                                     );
-                                    if (terpilih != null) {
+                                    if (picked != null) {
                                       setState(() {
-                                        tanggalTerpilih = terpilih;
+                                        tanggalTerpilih = picked;
+                                        _dateController.text = formatTanggal;
                                       });
                                     }
                                   },
@@ -277,7 +406,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                               ],
                             ),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,91 +414,91 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 Text(
                                   "Time",
                                   style: GoogleFonts.poppins(
-                                    fontSize: 24,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xFF584A4A),
+                                    color: const Color(0xFF584A4A),
                                   ),
                                 ),
                                 TextField(
                                   readOnly: true,
-                                  controller:
-                                      TextEditingController(text: formatWaktu),
+                                  controller: _timeController,
                                   decoration: InputDecoration(
-                                    fillColor: Color(0xFFA0D7C8),
+                                    fillColor: const Color(0xFFA0D7C8),
                                     filled: true,
-                                    suffixIcon: Icon(Icons.access_time),
+                                    suffixIcon: const Icon(Icons.access_time),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: BorderSide.none,
                                     ),
                                   ),
                                   onTap: () async {
-                                    final TimeOfDay? terpilih =
+                                    final TimeOfDay? picked =
                                         await showTimePicker(
                                       context: context,
                                       initialTime:
                                           waktuTerpilih ?? TimeOfDay.now(),
                                     );
-                                    if (terpilih != null) {
+                                    if (picked != null) {
                                       setState(() {
-                                        waktuTerpilih = terpilih;
+                                        waktuTerpilih = picked;
+                                        _timeController.text = formatWaktu;
                                       });
                                     }
                                   },
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
 
-                      // NOTES
-                      SizedBox(height: 10),
+                      // Notes
+                      const SizedBox(height: 10),
                       Text(
                         "Notes",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF584A4A),
+                          color: const Color(0xFF584A4A),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       TextField(
+                        controller: _notesController,
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          color: Color(0xFF584A4A),
+                          fontSize: 16,
+                          color: const Color(0xFF584A4A),
                         ),
                         decoration: InputDecoration(
                           hintText: "Input your notes (optional)",
-                          hintStyle: GoogleFonts.poppins(fontSize: 20),
+                          hintStyle: GoogleFonts.poppins(fontSize: 16),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
-                          fillColor: Color(0xFFA0D7C8),
+                          fillColor: const Color(0xFFA0D7C8),
                           filled: true,
                         ),
                         maxLines: 6,
                       ),
-                      SizedBox(height: 35),
+                      const SizedBox(height: 35),
                       Center(
                         child: ElevatedButton(
-                          onPressed: () {
-                            showTopSnackBar(context, 'Task Saved Successfully');
-                          },
+                          onPressed: _saveTask,
                           style: ElevatedButton.styleFrom(
                             foregroundColor: const Color(0xFF584A4A),
                             backgroundColor: const Color(0xFFA0D7C8),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 5),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50)),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
                           ),
                           child: Text(
                             "Save",
                             style: GoogleFonts.poppins(
-                              fontSize: 24,
-                              color: Color(0xFF584A4A),
+                              fontSize: 20,
+                              color: const Color(0xFF584A4A),
                             ),
                           ),
                         ),
@@ -378,51 +507,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
-}
-
-void showTopSnackBar(BuildContext context, String message) {
-  final overlay = Overlay.of(context);
-  final overlayEntry = OverlayEntry(
-    builder: (context) => Positioned(
-      top: 50,
-      left: 20,
-      right: 20,
-      child: Material(
-        elevation: 10,
-        color: Colors.transparent,
-        child: Container(
-          padding: EdgeInsets.all(25),
-          decoration: BoxDecoration(
-            color: Color(0xFF5DEE4F),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Color(0xFF15FF00), width: 4),
-          ),
-          child: Center(
-            child: Text(
-              message,
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  // Masukkan overlay-nya
-  overlay.insert(overlayEntry);
-
-  // Hapus setelah 2 detik
-  Future.delayed(Duration(seconds: 2), () {
-    overlayEntry.remove();
-  });
 }

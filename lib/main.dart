@@ -6,11 +6,11 @@ void main() async {
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1eG9ieHd3a3NteHd2aXVvdXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ5MjgwOTMsImV4cCI6MjA3MDUwNDA5M30.0xSqXHGSkvMUef-yEqqL38c6Xk5zDwvKNI17zrmC4sA',
     url: 'https://cuxobxwwksmxwviuouro.supabase.co'
   );
-  runApp(const TodoApp());
+  runApp(const MyApp());
 }
 
-class TodoApp extends StatelessWidget {
-  const TodoApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

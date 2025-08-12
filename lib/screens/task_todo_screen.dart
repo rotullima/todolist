@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:projek2_aplikasi_todolist/screens/task_done_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:projek2_aplikasi_todolist/screens/task_done_screen.dart'; // Asumsikan ini sudah ada
 
 class TaskTodoScreen extends StatefulWidget {
   const TaskTodoScreen({super.key});
@@ -12,69 +14,132 @@ class TaskTodoScreen extends StatefulWidget {
 }
 
 class _TaskTodoScreenState extends State<TaskTodoScreen> {
-  bool fungsiCheckBox = false;
+  // List tasks akan diisi dari Supabase
+  List<Map<String, dynamic>> tasks = [];
 
-  // Data list task
-  List<Map<String, dynamic>> tasks = [
-    {
-      'icon': Icons.cleaning_services, //Icon Kegiatan
-      'title': 'Do The Dishes', //Judul tugasa
-      'subtitle': '23 Juli 2025, 19:00', //Waktu Tugas
-      'done': false, //Status Checklist
-    },
-    {
-      'icon': Icons.directions_run,
-      'title': 'Jogging',
-      'subtitle': '23 Juli 2025, 05:00',
-      'done': false,
-    },
-    {
-      'icon': Icons.group,
-      'title': 'Bermain bersama teman',
-      'subtitle': '23 Juli 2025, 19:00',
-      'done': false,
-    },
-    {
-      'icon': Icons.mosque,
-      'title': "Sholawat Rutin Habis Isya'",
-      'subtitle': '24 Juli 2025, 20:00',
-      'done': false,
-    },
-    {
-      'icon': Icons.shopping_bag,
-      'title': 'Beli Skincare di Sociolla',
-      'subtitle': '25 Juli 2025, 10:00',
-      'done': false,
-    },
-  ];
+  // Mapping icon berdasarkan category name (sesuaikan dengan categories di DB)
+  final Map<String, IconData> categoryIcons = {
+    'Religius': Icons.mosque,
+    'Personal': Icons.person,
+    'Healthy': Icons.directions_run,
+    'Shopping': Icons.shopping_bag,
+    'Work': Icons.work,
+    'Other': Icons.category,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTasks();
+  }
+
+  // Fetch tasks dari Supabase, hanya yang belum completed dan milik user login
+  Future<void> _fetchTasks() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please login to view tasks')),
+      );
+      return;
+    }
+
+    try {
+      final response = await Supabase.instance.client
+          .from('tasks')
+          .select('''
+            id, title, due_date, due_time, completed, notes,
+            categories (name),
+            priorities (name)
+          ''')
+          .eq('user_id', user.id)
+          .eq('completed', false) // Hanya tampilkan yang belum done
+          .order('created_at', ascending: true);
+
+      setState(() {
+        tasks = response.map((task) {
+          final categoryName = task['categories']['name'] ?? 'Other';
+          final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
+          return {
+            'id': task['id'], // Simpan ID untuk update/delete
+            'icon': categoryIcons[categoryName] ?? Icons.category,
+            'title': task['title'],
+            'subtitle': subtitle,
+            'done': task['completed'] ?? false,
+          };
+        }).toList();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load tasks: $e')),
+      );
+    }
+  }
+
+  // Format subtitle dari due_date dan due_time
+  String _formatSubtitle(String? dueDate, String? dueTime) {
+    if (dueDate == null) return '';
+    final date = DateFormat('MMMM d, yyyy').format(DateTime.parse(dueDate));
+    final time = dueTime ?? '';
+    return '$date, $time';
+  }
+
+  // Update status completed di Supabase
+  Future<void> _updateTaskDone(String taskId, bool done) async {
+    try {
+      await Supabase.instance.client
+          .from('tasks')
+          .update({'completed': done})
+          .eq('id', taskId);
+      // Refresh list setelah update
+      _fetchTasks();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update task: $e')),
+      );
+    }
+  }
+
+  // Hapus task dari Supabase
+  Future<void> _deleteTask(String taskId) async {
+    try {
+      await Supabase.instance.client.from('tasks').delete().eq('id', taskId);
+      // Refresh list setelah delete
+      _fetchTasks();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete task: $e')),
+      );
+    }
+  }
 
   void showDeleteDialog(int index) {
+    final taskId = tasks[index]['id'];
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.question, 
-      animType: AnimType.bottomSlide, 
-      title: "Confirm Delete Data", 
-      desc: "Are You Sure You Want To Delete Data?", 
-      showCloseIcon: true, 
+      dialogType: DialogType.question,
+      animType: AnimType.bottomSlide,
+      title: "Confirm Delete Data",
+      desc: "Are You Sure You Want To Delete Data?",
+      showCloseIcon: true,
       btnOkOnPress: () {
-        setState(() {
-          tasks.removeAt(index); 
-        });
+        _deleteTask(taskId);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-              "Data Sudah Terhapus"), 
+            content: Text("Data Sudah Terhapus"),
             backgroundColor: Color(0xFF15FF00),
-            duration: Duration(seconds: 2), 
+            duration: Duration(seconds: 2),
           ),
         );
       },
-      btnCancelOnPress: () {}, 
-    ).show(); 
+      btnCancelOnPress: () {},
+    ).show();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Tanggal hari ini secara dinamis
+    final currentDate = DateFormat('MMMM, d, yyyy').format(DateTime.now());
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -90,7 +155,6 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                 ),
-                color: Color(0xFFA0D7C8),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                   bottomRight: Radius.circular(40),
@@ -116,7 +180,7 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'July, 25, 2025',
+                          currentDate, // Ganti ke tanggal dinamis
                           style: GoogleFonts.poppins(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -135,75 +199,77 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(30),
-                child: ListView.builder(
-                  itemCount: tasks.length,
-                  itemBuilder: (context, index) {
-                    final task = tasks[index];
-                    return Column(
-                      children: [
-                        Slidable(
-                          key: ValueKey(index),
-                          endActionPane: ActionPane(
-                            motion: const DrawerMotion(),
+                child: tasks.isEmpty
+                    ? const Center(child: Text('No tasks found'))
+                    : ListView.builder(
+                        itemCount: tasks.length,
+                        itemBuilder: (context, index) {
+                          final task = tasks[index];
+                          return Column(
                             children: [
-                              SlidableAction(
-                                onPressed: (_) => showDeleteDialog(index),
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                            ],
-                          ),
-                          child: Card(
-                            color: const Color(0xFFA0D7C8),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                              leading: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
+                              Slidable(
+                                key: ValueKey(task['id']),
+                                endActionPane: ActionPane(
+                                  motion: const DrawerMotion(),
+                                  children: [
+                                    SlidableAction(
+                                      onPressed: (_) => showDeleteDialog(index),
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
+                                    ),
+                                  ],
                                 ),
-                                child: Icon(task['icon'], size: 30),
-                              ),
-                              title: Text(
-                                task['title'],
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF584A4A),
-                                ),
-                              ),
-                              subtitle: Text(task['subtitle']),
-                              trailing: Checkbox(
-                                value: task['done'],
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    tasks[index]['done'] = value ?? false;
-                                  });
-                                  if (value == true) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const TaskDoneScreen(),
+                                child: Card(
+                                  color: const Color(0xFFA0D7C8),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: ListTile(
+                                    leading: Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
                                       ),
-                                    );
-                                  }
-                                },
+                                      child: Icon(task['icon'], size: 30),
+                                    ),
+                                    title: Text(
+                                      task['title'],
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xFF584A4A),
+                                      ),
+                                    ),
+                                    subtitle: Text(task['subtitle']),
+                                    trailing: Checkbox(
+                                      value: task['done'],
+                                      onChanged: (bool? value) {
+                                        final newValue = value ?? false;
+                                        final taskId = tasks[index]['id'];
+                                        _updateTaskDone(taskId, newValue);
+                                        if (newValue) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const TaskDoneScreen(),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    );
-                  },
-                ),
+                              const SizedBox(height: 10),
+                            ],
+                          );
+                        },
+                      ),
               ),
             ),
           ],

@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     width: 80,
                     height: 80,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                       boxShadow: [
@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.account_circle_outlined,
                       // color: Colors.black,
                       size: 70,
@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'ja',
+                        'Alfian Prada',
                         style: GoogleFonts.poppins(
                           fontWeight: FontWeight.w800,
                           fontSize: 24,
@@ -307,33 +307,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-              ),
-            ),
-
-            SizedBox(height: 20),
-
-            // Thank You Card
-            Center(
-              child: Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Color(0xFFA0D7C8),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  "Terima Kasih sudah menjadi manusia \nbertanggung jawab\n"
-                  "Klik tombol '+' di bawah untuk tambah tugas",
-                  style: GoogleFonts.poppins(
-                      fontSize: 15, fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
