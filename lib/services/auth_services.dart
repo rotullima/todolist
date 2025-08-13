@@ -58,7 +58,6 @@ class AuthServices {
         },
       );
       print('Pendaftaran auth berhasil, user ID: ${response.user?.id}');
-      // Trigger akan menangani insert ke profiles
       return response;
     } catch (e) {
       print('Error saat pendaftaran: $e');
@@ -94,5 +93,31 @@ class AuthServices {
     }
     print('Tidak ada user ID, profil tidak diambil');
     return null;
+  }
+
+  // New method to update user profile
+  Future<void> updateUserProfile({
+    required String name,
+    required String bio,
+    required String? tanggalLahir,
+    required String nomerHp,
+  }) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId != null) {
+        await _supabase.from('profiles').update({
+          'name': name,
+          'bio': bio,
+          'tanggal_lahir': tanggalLahir,
+          'nomer_hp': nomerHp,
+        }).eq('id', userId);
+        print('Profile updated successfully for user ID: $userId');
+      } else {
+        throw Exception('No user is logged in');
+      }
+    } catch (e) {
+      print('Error updating profile: $e');
+      throw Exception('Failed to update profile: $e');
+    }
   }
 }

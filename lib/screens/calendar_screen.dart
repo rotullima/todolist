@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import '../services/task_service.dart';
 
 class CalenderScreen extends StatefulWidget {
   const CalenderScreen({super.key});
@@ -9,31 +11,63 @@ class CalenderScreen extends StatefulWidget {
 }
 
 class _CalenderScreenState extends State<CalenderScreen> {
+  late DateTime _selectedDate;
+  late List<DateTime> _weekDates;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = DateTime.now();
+    _updateWeekDates();
+  }
+
+  // Memperbarui daftar tanggal untuk seminggu
+  void _updateWeekDates() {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    _weekDates = List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
+  }
+
+  // Format tanggal untuk tampilan
+  String _formatDate(DateTime date) {
+    return DateFormat('d').format(date);
+  }
+
+  // Format tanggal untuk header
+  String _formatHeaderDate(DateTime date) {
+    return DateFormat('MMMM, d yyyy').format(date);
+  }
+
+  // Format tanggal untuk query Supabase (YYYY-MM-DD)
+  String _formatSupabaseDate(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final days = ['27', '28', '29', '30', '31', '1', '2'];
+    final taskServices = TaskServices();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Today',
-        style: GoogleFonts.poppins(
-          fontSize: 24,
-          color: Color(0xFF584A4A),
-          fontWeight: FontWeight.bold,
-        )
+        title: Text(
+          'Today',
+          style: GoogleFonts.poppins(
+            fontSize: 24,
+            color: const Color(0xFF584A4A),
+            fontWeight: FontWeight.bold,
+          ),
         ),
-       leading: IconButton(
-       icon: Icon(
-        Icons.arrow_back_ios,
-        size: 24,
-        color: Color(0xFF584A4A),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            size: 24,
+            color: Color(0xFF584A4A),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        onPressed: () {
-          Navigator.pop(context);
-      },
-    ),
       ),
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -41,242 +75,130 @@ class _CalenderScreenState extends State<CalenderScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Productive Day, Richo',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF584A4A),
+                color: const Color(0xFF584A4A),
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              'July, 29 2025',
-              style: TextStyle(
+              _formatHeaderDate(_selectedDate),
+              style: GoogleFonts.poppins(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF584A4A),
+                color: const Color(0xFF584A4A),
               ),
             ),
           ),
-
-          SizedBox(height: 30,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(7, (index) {
-                  return index == 2
-                  ? CircleAvatar(
-                    backgroundColor: Color(0xFFA0D7C8),
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(7, (index) {
+                final date = _weekDates[index];
+                final isSelected = date.day == _selectedDate.day &&
+                    date.month == _selectedDate.month &&
+                    date.year == _selectedDate.year;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedDate = date;
+                    });
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: isSelected
+                        ? const Color(0xFFA0D7C8)
+                        : Colors.transparent,
                     radius: 18.0,
                     child: Text(
-                      days[index],
-                      style: TextStyle(
-                        fontWeight: index == 2 ? FontWeight.bold : FontWeight.normal,
-                         color: Color(0xFF584A4A),
-                         fontSize: 14,
+                      _formatDate(date),
+                      style: GoogleFonts.poppins(
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? const Color(0xFF584A4A)
+                            : Colors.grey,
+                        fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                  )
-                  : Text(
-                    days[index],
-                    style: TextStyle(
-                      fontWeight: index == 2 ? FontWeight.bold : FontWeight.normal,
-                      color: index == 2 ? Colors.black : Colors.grey,
-                      fontSize: 16,
+                  ),
+                );
+              }),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: taskServices.getTasksByDate(_formatSupabaseDate(_selectedDate)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                final tasks = snapshot.data ?? [];
+                if (tasks.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'No tasks for this date',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: const Color(0xFF584A4A),
+                      ),
                     ),
                   );
-                }),
-              ),
-            ),
-
-          SizedBox(height: 20,),
-
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16.0),
-              children: [
-                Container(
-                  width: 368,
-                  height: 71,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '5:30 am',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF584A4A),
-                        ),
+                }
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16.0),
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+                    final task = tasks[index];
+                    return Container(
+                      width: 368,
+                      height: 71,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.only(left: 15),
+                      margin: const EdgeInsets.only(bottom: 20),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFA0D7C8),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          'Do the dishes',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xFF584A4A),
+                      child: Row(
+                        children: [
+                          Text(
+                            task['due_time'].isNotEmpty ? task['due_time'] : 'All day',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: const Color(0xFF584A4A),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20,),
-
-                Container(
-                  width: 368,
-                  height: 71,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '6:00 am',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF584A4A),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          'Run with family',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xFF584A4A),
+                          const SizedBox(width: 20),
+                          Expanded(
+                            child: Text(
+                              task['title'],
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: const Color(0xFF584A4A),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20,),
-
-                Container(
-                  width: 368,
-                  height: 71,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '8:00 am',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF584A4A),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          'Take a bath',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xFF584A4A),
+                          Icon(
+                            task['category_icon'],
+                            color: const Color(0xFF584A4A),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20,),
-
-                Container(
-                  width: 368,
-                  height: 71,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '1:00 pm',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF584A4A),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          'Meet with friend',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xFF584A4A),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 20,),
-
-                Container(
-                  width: 368,
-                  height: 71,
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFA0D7C8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '2:45 pm',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: Color(0xFF584A4A),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: Text(
-                          'Pray',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Color(0xFF584A4A),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
