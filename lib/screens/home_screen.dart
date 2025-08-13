@@ -6,6 +6,7 @@ import 'task_done_screen.dart';
 import 'my_profile_screen.dart';
 import 'create_task_screen.dart';
 import '../services/auth_services.dart';
+import '../services/task_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authServices = AuthServices();
+    final taskServices = TaskServices();
 
     return Scaffold(
       body: SafeArea(
@@ -40,8 +42,8 @@ class HomeScreen extends StatelessWidget {
                 final profile = snapshot.data ?? {};
                 return Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 30, vertical: 40),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
                   decoration: const BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -134,43 +136,56 @@ class HomeScreen extends StatelessWidget {
                       color: const Color(0xFF584A4A),
                     ),
                   ),
-
                   const SizedBox(height: 10),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TaskTodoScreen(),
-                        ),
-                      );
-                    },
-                    child: _menuCard(
-                      color: const Color(0xFFA0D7C8),
-                      icon: Icons.schedule,
-                      title: 'To Do',
-                      subtitle: '5 Task Now',
-                    ),
-                  ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TaskTodoScreen(),
+                          ),
+                        );
+                      },
+                      child: FutureBuilder<int>(
+                        future: taskServices.getUserPendingTaskCount(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return const Text("Loading...");
+                          return _menuCard(
+                            color: const Color(0xFFA0D7C8),
+                            icon: Icons.schedule,
+                            title: 'To Do',
+                            subtitle: '${snapshot.data} Task Now',
+                          );
+                        },
+                      )),
 
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TaskDoneScreen(),
-                        ),
-                      );
-                    },
-                    child: _menuCard(
-                      color: const Color(0xFFA0D7C8),
-                      icon: Icons.check_circle_outline,
-                      title: 'Done',
-                      subtitle: '5 Task Now | 3 Task Done',
-                    ),
-                  ),
-
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TaskDoneScreen(),
+                          ),
+                        );
+                      },
+                      child: FutureBuilder<List<int>>(
+                        future: Future.wait([
+                          taskServices.getUserTaskCount(),
+                          taskServices.getUserDoneTaskCount()
+                        ]),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return const Text("Loading...");
+                          final total = snapshot.data![0];
+                          final done = snapshot.data![1];
+                          return _menuCard(
+                            color: const Color(0xFFA0D7C8),
+                            icon: Icons.check_circle_outline,
+                            title: 'Done',
+                            subtitle: '$total Task | $done Task Done',
+                          );
+                        },
+                      )),
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {

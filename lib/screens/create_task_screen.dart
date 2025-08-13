@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
+import '../services/task_service.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -36,11 +37,14 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return waktuTerpilih!.format(context);
   }
 
+  final taskService = TaskServices();
+
   @override
   void initState() {
     super.initState();
-    _fetchCategories();
-    _fetchPriorities();
+    // _fetchCategories();
+    // _fetchPriorities();
+    _loadDropdownData();
     _dateController.text = formatTanggal;
     _timeController.text = formatWaktu;
   }
@@ -55,14 +59,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   }
 
   // Fetch categories dari Supabase
-  Future<void> _fetchCategories() async {
+  Future<void> _loadDropdownData() async {
     try {
-      final response =
-          await Supabase.instance.client.from('categories').select('id, name');
+      final categories = await taskService.getCategories();
+      final priorities = await taskService.getPriorities();
       setState(() {
-        mapKategori = {
-          for (var cat in response) cat['name']: cat['id'].toString()
-        };
+        mapKategori = categories;
+        mapPrioritas = priorities;
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,21 +75,21 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   }
 
   // Fetch priorities dari Supabase
-  Future<void> _fetchPriorities() async {
-    try {
-      final response =
-          await Supabase.instance.client.from('priorities').select('id, name');
-      setState(() {
-        mapPrioritas = {
-          for (var pri in response) pri['name']: pri['id'].toString()
-        };
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load priorities: $e')),
-      );
-    }
-  }
+  // Future<void> _fetchPriorities() async {
+  //   try {
+  //     final response =
+  //         await Supabase.instance.client.from('priorities').select('id, name');
+  //     setState(() {
+  //       mapPrioritas = {
+  //         for (var pri in response) pri['name']: pri['id'].toString()
+  //       };
+  //     });
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to load priorities: $e')),
+  //     );
+  //   }
+  // }
 
   // Validasi input sebelum save
   bool _validateTask() {
@@ -118,21 +121,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   }
 
   // Simpan task ke Supabase
+
   Future<void> _saveTask() async {
     if (!_validateTask()) return;
 
-    // Ambil ID dari map
     final categoryId = mapKategori[kategoriNameTerpilih];
     final priorityId = mapPrioritas[prioritasNameTerpilih];
-
-    // Pastikan user sudah login
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please login to save task')),
-      );
-      return;
-    }
 
     try {
       // Loading indicator
@@ -142,22 +136,18 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         builder: (context) => const Center(child: CircularProgressIndicator()),
       );
 
-      // Insert ke tabel tasks
-      await Supabase.instance.client.from('tasks').insert({
-        'user_id': user.id,
-        'title': _titleController.text,
-        'category_id': categoryId,
-        'priority_id': priorityId,
-        'due_date': tanggalTerpilih!.toIso8601String().split('T')[0],
-        'due_time': waktuTerpilih?.format(context),
-        'notes': _notesController.text.isEmpty ? null : _notesController.text,
-        'completed': false, // Tambah ini
-      });
+      // Panggil service
+      await taskService.createTask(
+        title: _titleController.text,
+        categoryId: categoryId!,
+        priorityId: priorityId!,
+        dueDate: tanggalTerpilih!.toIso8601String().split('T')[0],
+        dueTime: waktuTerpilih?.format(context),
+        notes: _notesController.text.isEmpty ? null : _notesController.text,
+      );
 
-      // Tutup loading
       Navigator.pop(context); // Close loading dialog
 
-      // Tampilkan snackbar sukses
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Task Saved Successfully'),
@@ -165,10 +155,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         ),
       );
 
-      // Kembali ke halaman sebelumnya
-      Navigator.pop(context);
+      Navigator.pop(context); // Kembali ke halaman sebelumnya
     } catch (e) {
-      // Tutup loading jika error
       Navigator.pop(context); // Close loading dialog
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to save task: $e')),
