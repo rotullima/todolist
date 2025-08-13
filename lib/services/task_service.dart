@@ -135,7 +135,6 @@ Future<List<Map<String, dynamic>>> getTasksByDate(String dueDate) async {
       .select()
       .eq('user_id', user.id)
       .eq('due_date', dueDate)
-      .eq('completed', false)
       .order('due_time', ascending: true);
 
   final categoriesData =

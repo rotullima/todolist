@@ -224,7 +224,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 child: Text(
-                  "Terima Kasih sudah menjadi manusia \nbertanggung jawab\n"
+                  "Rencanakan, kerjakan, dan tuntaskan harimu."
                   "Klik tombol '+' di bawah untuk tambah tugas",
                   style: GoogleFonts.poppins(
                       fontSize: 15, fontWeight: FontWeight.w600),
