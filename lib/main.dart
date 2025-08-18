@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projek2_aplikasi_todolist/screens/splash_screen.dart';
+import 'package:projek2_aplikasi_todolist/screens/auth/splash_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   await Supabase.initialize(

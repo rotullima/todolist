@@ -8,9 +8,14 @@ import 'create_task_screen.dart';
 import '../services/auth_services.dart';
 import '../services/task_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final authServices = AuthServices();
@@ -96,14 +101,6 @@ class HomeScreen extends StatelessWidget {
                               color: const Color(0xFF584A4A),
                             ),
                           ),
-                          // Text(
-                          //   '${profile['name'] ?? 'User'}',
-                          //   style: GoogleFonts.poppins(
-                          //     fontWeight: FontWeight.w800,
-                          //     fontSize: 24,
-                          //     color: const Color(0xFF584A4A),
-                          //   ),
-                          // ),
                           Text(
                             '${profile['bio'] ?? 'Slow Living'}',
                             style: GoogleFonts.poppins(
@@ -245,13 +242,14 @@ class HomeScreen extends StatelessWidget {
           shape: const CircleBorder(),
           backgroundColor: const Color(0xFFA0D7C8),
           elevation: 0,
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const CreateTaskScreen(),
               ),
             );
+            setState(() {}); // <-- ini yang bikin data refresh
           },
           child: const Icon(
             Icons.add,

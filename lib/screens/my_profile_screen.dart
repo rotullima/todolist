@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:projek2_aplikasi_todolist/screens/splash_screen.dart';
+import 'package:projek2_aplikasi_todolist/screens/auth/splash_screen.dart';
 import 'package:projek2_aplikasi_todolist/services/auth_services.dart';
 
 class MyProfileScreen extends StatefulWidget {
@@ -73,7 +73,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
             ),
           ),
           backgroundColor: Color(0xFF4CAF50),
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 1),
         ),
       );
     } catch (e) {
@@ -366,7 +366,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                                                 ),
                                                 Spacer(),
                                                 ElevatedButton(
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     Navigator.pop(context);
                                                     _updateUserProfile(
                                                       name: nameController.text,
@@ -374,6 +374,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                                                       birthDate: tanggalTerpilih?.toIso8601String(),
                                                       phoneNumber: phoneController.text,
                                                     );
+                                                    setState(() {});
                                                   },
                                                   style: ElevatedButton.styleFrom(
                                                     backgroundColor: Color(0xFF4CAF50),
