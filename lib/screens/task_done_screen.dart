@@ -76,7 +76,7 @@ class TaskDoneScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final task = tasks[index];
                         return Card(
-                          color: const Color(0xFFA0D7C8),
+                          color: TaskServices().priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

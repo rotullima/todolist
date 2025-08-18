@@ -53,6 +53,12 @@
       'Other': Icons.category_outlined,
     };
 
+    final Map<String, Color> priorityColors = {
+      'High': const Color(0xFFE57373),   // merah soft
+      'Mid': const Color(0xFFFFD54F), // kuning soft
+      'Low': const Color(0xFF81C784),    // hijau soft
+    };
+
     // Hitung jumlah semua task milik user
     Future<int> getUserTaskCount() async {
       final user = supabase.auth.currentUser;
@@ -100,28 +106,33 @@
       // Ambil task selesai
       final tasksData = await supabase
           .from('tasks')
-          .select('title, due_date, due_time, category_id')
+          .select('title, due_date, due_time, category_id, priority_id')
           .eq('user_id', user.id)
           .eq('completed', true)
           .order('created_at', ascending: true);
 
       // Ambil kategori sekali
-      final categoriesData =
-          await supabase.from('categories').select('id, name');
-
+      final categoriesData = await supabase.from('categories').select('id, name');
       final categoryMap = {
         for (var c in categoriesData) c['id'].toString(): c['name'] as String
       };
 
+      final prioritiesData = await supabase.from('priorities').select('id, name');
+      final priorityMap = {
+        for (var p in prioritiesData) p['id'].toString(): p['name'] as String
+      };
+
       return tasksData.map<Map<String, dynamic>>((task) {
-        final categoryName =
-            categoryMap[task['category_id'].toString()] ?? 'Other';
+        final categoryName = categoryMap[task['category_id'].toString()] ?? 'Other';
+        final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
+
         return {
           'title': task['title'],
           'due_date': task['due_date'],
           'due_time': task['due_time'],
           'category_icon':
               categoryIcons[categoryName] ?? Icons.category_outlined,
+          'priority': priorityName,
         };
       }).toList();
     }

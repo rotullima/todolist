@@ -27,6 +27,12 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     'Other': Icons.category,
   };
 
+  final Map<String, Color> priorityColors = {
+  'High': const Color(0xFFE57373),   // merah soft
+  'Mid': const Color(0xFFFFD54F), // kuning soft
+  'Low': const Color(0xFF81C784),    // hijau soft
+  };
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +64,7 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
       setState(() {
         tasks = response.map((task) {
           final categoryName = task['categories']['name'] ?? 'Other';
+          final priorityName = task['priorities']['name'] ?? 'Low';
           final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
           return {
             'id': task['id'], // Simpan ID untuk update/delete
@@ -65,6 +72,7 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
             'title': task['title'],
             'subtitle': subtitle,
             'done': task['completed'] ?? false,
+            'priority': priorityName,
           };
         }).toList();
       });
@@ -222,7 +230,7 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                                   ],
                                 ),
                                 child: Card(
-                                  color: const Color(0xFFA0D7C8),
+                                  color: priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
