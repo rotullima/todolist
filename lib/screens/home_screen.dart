@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 child: Text(
-                  "Rencanakan, kerjakan, dan tuntaskan harimu."
+                  "Rencanakan, kerjakan, dan tuntaskan harimu. \n"
                   "Klik tombol '+' di bawah untuk tambah tugas",
                   style: GoogleFonts.poppins(
                       fontSize: 15, fontWeight: FontWeight.w600),

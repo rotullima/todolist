@@ -54,9 +54,9 @@
     };
 
     final Map<String, Color> priorityColors = {
-      'High': const Color(0xFFE57373),   // merah soft
-      'Mid': const Color(0xFFFFD54F), // kuning soft
-      'Low': const Color(0xFF81C784),    // hijau soft
+      'High': const Color.fromARGB(255, 237, 150, 150),   // merah soft
+      'Mid': const Color.fromARGB(255, 244, 218, 132), // kuning soft
+      'Low': const Color.fromARGB(255, 149, 223, 153),    // hijau soft
     };
 
     // Hitung jumlah semua task milik user
@@ -143,7 +143,7 @@ Future<List<Map<String, dynamic>>> getTasksByDate(String dueDate) async {
 
   final tasks = await supabase
       .from('tasks')
-      .select()
+      .select('title, due_date, due_time, category_id, priority_id')
       .eq('user_id', user.id)
       .eq('due_date', dueDate)
       .order('due_time', ascending: true);
@@ -154,15 +154,23 @@ Future<List<Map<String, dynamic>>> getTasksByDate(String dueDate) async {
     for (var c in categoriesData) c['id'].toString(): c['name'] as String
   };
 
+  final prioritiesData = await supabase.from('priorities').select('id, name');
+  final priorityMap = {
+    for (var p in prioritiesData) p['id'].toString(): p['name'] as String
+  };
+
   return tasks.map<Map<String, dynamic>>((task) {
     final categoryName =
         categoryMap[task['category_id'].toString()] ?? 'Other';
+    final priorityName =
+        priorityMap[task['priority_id'].toString()] ?? 'Low';
     return {
       'title': task['title'],
       'due_date': task['due_date'],
       'due_time': task['due_time'] ?? '',
       'category_icon':
           categoryIcons[categoryName] ?? Icons.category_outlined,
+      'priority': priorityName,
     };
   }).toList();
 }

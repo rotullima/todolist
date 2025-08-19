@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../services/task_service.dart';
+import '../services/auth_services.dart';
 
 class CalenderScreen extends StatefulWidget {
   const CalenderScreen({super.key});
@@ -25,7 +26,8 @@ class _CalenderScreenState extends State<CalenderScreen> {
   void _updateWeekDates() {
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    _weekDates = List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
+    _weekDates =
+        List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
   }
 
   // Format tanggal untuk tampilan
@@ -46,6 +48,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
   @override
   Widget build(BuildContext context) {
     final taskServices = TaskServices();
+    final authServices = AuthServices();
 
     return Scaffold(
       appBar: AppBar(
@@ -71,31 +74,58 @@ class _CalenderScreenState extends State<CalenderScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Productive Day, Richo',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF584A4A),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              _formatHeaderDate(_selectedDate),
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF584A4A),
-              ),
-            ),
+          FutureBuilder(
+            future: authServices.getUserProfile(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text("Error: ${snapshot.error}"),
+                );
+              }
+
+              final profile = snapshot.data ?? {};
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Productive Day, ${profile['name'] ?? 'User'}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF584A4A),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      _formatHeaderDate(_selectedDate),
+                      style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF584A4A),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
           const SizedBox(height: 30),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(7, (index) {
@@ -117,10 +147,10 @@ class _CalenderScreenState extends State<CalenderScreen> {
                     child: Text(
                       _formatDate(date),
                       style: GoogleFonts.poppins(
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        color: isSelected
-                            ? const Color(0xFF584A4A)
-                            : Colors.grey,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        color:
+                            isSelected ? const Color(0xFF584A4A) : Colors.grey,
                         fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
@@ -133,7 +163,8 @@ class _CalenderScreenState extends State<CalenderScreen> {
           const SizedBox(height: 20),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: taskServices.getTasksByDate(_formatSupabaseDate(_selectedDate)),
+              future: taskServices
+                  .getTasksByDate(_formatSupabaseDate(_selectedDate)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -158,20 +189,25 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
                     final task = tasks[index];
+                    final priorityName = (task['priority'] ?? 'Low') as String;
                     return Container(
                       width: 368,
                       height: 71,
                       alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
                       margin: const EdgeInsets.only(bottom: 20),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFA0D7C8),
+                        color: taskServices.priorityColors[priorityName] ??
+                            const Color(0xFFA0D7C8),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Row(
                         children: [
                           Text(
-                            task['due_time'].isNotEmpty ? task['due_time'] : 'All day',
+                            task['due_time'].isNotEmpty
+                                ? task['due_time']
+                                : 'All day',
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
