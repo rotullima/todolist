@@ -68,7 +68,7 @@ class SplashScreen extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      'Get organized your life',
+                      'Your next step to a better day',
                       style: GoogleFonts.poppins(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -77,9 +77,9 @@ class SplashScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      'simple and effective\n'
-                      'to-do list and task manager app\n'
-                      'which helps you manage time\n',
+                      'Simple and effective\n'
+                      'To Do list & task manager app\n'
+                      'Plan your day with ease \n',
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,

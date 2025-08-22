@@ -74,51 +74,91 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     }
   }
 
-  // Fetch priorities dari Supabase
-  // Future<void> _fetchPriorities() async {
-  //   try {
-  //     final response =
-  //         await Supabase.instance.client.from('priorities').select('id, name');
-  //     setState(() {
-  //       mapPrioritas = {
-  //         for (var pri in response) pri['name']: pri['id'].toString()
-  //       };
-  //     });
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Failed to load priorities: $e')),
-  //     );
-  //   }
-  // }
-
-  // Validasi input sebelum save
-  bool _validateTask() {
-    if (_titleController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Task title is required')),
-      );
-      return false;
-    }
-    if (kategoriNameTerpilih == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a category')),
-      );
-      return false;
-    }
-    if (prioritasNameTerpilih == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a priority')),
-      );
-      return false;
-    }
-    if (tanggalTerpilih == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a date')),
-      );
-      return false;
-    }
-    return true; // Waktu opsional, jadi tidak divalidasi
+bool _validateTask() {
+  if (_titleController.text.isEmpty) {
+    _showValidationDialog('Task title is required');
+    return false;
   }
+  if (kategoriNameTerpilih == null) {
+    _showValidationDialog('Please select a category');
+    return false;
+  }
+  if (prioritasNameTerpilih == null) {
+    _showValidationDialog('Please select a priority');
+    return false;
+  }
+  if (tanggalTerpilih == null) {
+    _showValidationDialog('Please select a date');
+    return false;
+  }
+  return true; // Waktu opsional
+}
+
+// Fungsi popup
+void _showValidationDialog(String message) {
+  showDialog(
+    context: context,
+    builder: (context) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.transparent,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.35, // panjang ke samping
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color(0xFFA0D7C8),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Pesan
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF584A4A),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Tombol OK di kanan bawah
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 105,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      'OK',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF584A4A),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
   // Simpan task ke Supabase
 

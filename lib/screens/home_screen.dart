@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (!snapshot.hasData) return const Text("Loading...");
                           return _menuCard(
                             color: const Color(0xFFA0D7C8),
-                            icon: Icons.schedule,
+                            icon: Icons.assignment_outlined,
                             title: 'To Do',
                             subtitle: '${snapshot.data} Task Now',
                           );
@@ -221,8 +221,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 child: Text(
-                  "Rencanakan, kerjakan, dan tuntaskan harimu. \n"
-                  "Klik tombol '+' di bawah untuk tambah tugas",
+                  "Organize your day, get things done, and feel accomplished. \n"
+                  "Use '+' to add a task.",
                   style: GoogleFonts.poppins(
                       fontSize: 15, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,

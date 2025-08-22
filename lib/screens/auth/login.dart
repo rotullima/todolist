@@ -32,7 +32,7 @@ class _LoginModalState extends State<LoginModal> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'Login Gagal',
+          'Login Failed',
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -105,10 +105,10 @@ class _LoginModalState extends State<LoginModal> {
                 hint: 'info@example.com',
                 validator: (value) {
                   if (value == null || value.isEmpty)
-                    return 'Email tidak boleh kosong';
+                    return 'Email must not be empty';
                   if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                       .hasMatch(value)) {
-                    return 'Email tidak valid';
+                    return 'Invalid Email';
                   }
                   return null;
                 },
@@ -116,8 +116,8 @@ class _LoginModalState extends State<LoginModal> {
               const SizedBox(height: 20),
               _buildTextField(
                 controller: passwordController,
-                label: 'Kata Sandi',
-                hint: 'Kata Sandi',
+                label: 'Password',
+                hint: 'Password',
                 obscureText: !isPasswordVisible,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -132,8 +132,8 @@ class _LoginModalState extends State<LoginModal> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty)
-                    return 'Kata sandi tidak boleh kosong';
-                  if (value.length < 6) return 'Kata sandi minimal 6 karakter';
+                    return 'Password must not be empty';
+                  if (value.length < 6) return 'Password must be at least 6 characters';
                   return null;
                 },
               ),
@@ -159,20 +159,20 @@ class _LoginModalState extends State<LoginModal> {
                             );
                           } catch (e) {
                             String errorMessage =
-                                'Email atau kata sandi salah. Silakan coba lagi.';
+                                'Incorrect email or password. Please try again.';
                             if (e
                                 .toString()
                                 .contains('invalid login credentials')) {
                               errorMessage =
-                                  'Email atau kata sandi salah. Silakan coba lagi.';
+                                  'Incorrect email or password. Please try again.';
                             } else if (e
                                 .toString()
                                 .contains('email not confirmed')) {
                               errorMessage =
-                                  'Email belum diverifikasi. Silakan periksa email Anda.';
+                                  'Email has not been confirmed. Please check your email.';
                             } else {
                               errorMessage =
-                                  'Pastikan sandi atau email anda sesuai dan sudah terdaftar. ';
+                                  'Make sure your password or email is correct.';
                             }
                             _showErrorDialog(errorMessage);
                           } finally {
@@ -205,7 +205,7 @@ class _LoginModalState extends State<LoginModal> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Belum punya akun? ',
+                    'No account yet? ',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

@@ -82,9 +82,9 @@ class _RegisterModalState extends State<RegisterModal> {
                 label: 'Email',
                 hint: 'info@example.com',
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
+                  if (value == null || value.isEmpty) return 'Email must not be empty';
                   if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                    return 'Email tidak valid';
+                    return 'Invalid email';
                   }
                   return null;
                 },
@@ -92,20 +92,20 @@ class _RegisterModalState extends State<RegisterModal> {
               const SizedBox(height: 20),
               _buildTextField(
                 controller: nameController,
-                label: 'Nama',
-                hint: 'Nama Anda',
-                validator: (value) => value == null || value.isEmpty ? 'Nama tidak boleh kosong' : null,
+                label: 'Name',
+                hint: 'Your Name',
+                validator: (value) => value == null || value.isEmpty ? 'Name must not be empty' : null,
               ),
               const SizedBox(height: 20),
               _buildTextField(
                 controller: bioController,
                 label: 'Bio',
-                hint: 'Tentang Anda',
+                hint: 'About You',
               ),
               const SizedBox(height: 20),
               _buildTextField(
                 controller: tanggalLahirController,
-                label: 'Tanggal Lahir',
+                label: 'Birth Date',
                 hint: 'YYYY-MM-DD',
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
@@ -125,15 +125,15 @@ class _RegisterModalState extends State<RegisterModal> {
               const SizedBox(height: 20),
               _buildTextField(
                 controller: nomerHpController,
-                label: 'Nomor Telepon',
+                label: 'Contact NUmber',
                 hint: '+628123456789',
-                validator: (value) => value == null || value.isEmpty ? 'Nomor telepon tidak boleh kosong' : null,
+                validator: (value) => value == null || value.isEmpty ? 'Contact number must not be empty' : null,
               ),
               const SizedBox(height: 20),
               _buildTextField(
                 controller: passwordController,
-                label: 'Kata Sandi',
-                hint: 'Kata Sandi',
+                label: 'Password',
+                hint: 'Password',
                 obscureText: !isPasswordVisible,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -144,16 +144,16 @@ class _RegisterModalState extends State<RegisterModal> {
                   onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Kata sandi tidak boleh kosong';
-                  if (value.length < 6) return 'Kata sandi minimal 6 karakter';
+                  if (value == null || value.isEmpty) return 'Password must not be empty';
+                  if (value.length < 6) return 'Password must be at least 6 characters';
                   return null;
                 },
               ),
               const SizedBox(height: 20),
               _buildTextField(
                 controller: confirmPasswordController,
-                label: 'Konfirmasi Kata Sandi',
-                hint: 'Konfirmasi Kata Sandi',
+                label: 'Confirm Password',
+                hint: ' Confirm Password',
                 obscureText: !isConfirmPasswordVisible,
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -164,8 +164,8 @@ class _RegisterModalState extends State<RegisterModal> {
                   onPressed: () => setState(() => isConfirmPasswordVisible = !isConfirmPasswordVisible),
                 ),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Konfirmasi kata sandi tidak boleh kosong';
-                  if (value != passwordController.text) return 'Kata sandi tidak cocok';
+                  if (value == null || value.isEmpty) return 'Please confirm yur password';
+                  if (value != passwordController.text) return 'Password do not match';
                   return null;
                 },
               ),
@@ -192,13 +192,13 @@ class _RegisterModalState extends State<RegisterModal> {
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text(
-                                  'Pendaftaran Berhasil',
+                                  'Registation Successful',
                                   style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                                 content: Text(
                                   response.user?.emailConfirmedAt == null
-                                      ? 'Akun Anda telah berhasil dibuat. Silakan verifikasi email Anda untuk login.'
-                                      : 'Akun Anda telah berhasil dibuat. Selamat datang di To Do Day!',
+                                      ? 'Account created. Please verify your email to activate your account.'
+                                      : 'Account created. Wellcome to NexToDo!',
                                   style: GoogleFonts.poppins(fontSize: 16),
                                 ),
                                 actions: [
@@ -222,7 +222,7 @@ class _RegisterModalState extends State<RegisterModal> {
                             );
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Gagal mendaftar: ${e.toString()}')),
+                              SnackBar(content: Text('Registration failed: ${e.toString()}')),
                             );
                           } finally {
                             setState(() => isLoading = false);
@@ -254,7 +254,7 @@ class _RegisterModalState extends State<RegisterModal> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Sudah punya akun? ',
+                    'Already have an account? ',
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

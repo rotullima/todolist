@@ -139,7 +139,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'Profil',
+                                'Profile',
                                 style: GoogleFonts.poppins(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w800,
@@ -428,7 +428,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                       children: [
                         const SizedBox(height: 10),
                         Text(
-                          "My Bio",
+                          "My Profile",
                           style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
