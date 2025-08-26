@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-// import 'package:supabase_flutter/supabase_flutter.dart';
 import '../services/task_service.dart';
 
 class CreateTaskScreen extends StatefulWidget {
@@ -42,8 +41,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   @override
   void initState() {
     super.initState();
-    // _fetchCategories();
-    // _fetchPriorities();
     _loadDropdownData();
     _dateController.text = formatTanggal;
     _timeController.text = formatWaktu;
@@ -74,94 +71,93 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     }
   }
 
-bool _validateTask() {
-  if (_titleController.text.isEmpty) {
-    _showValidationDialog('Task title is required');
-    return false;
+  bool _validateTask() {
+    if (_titleController.text.isEmpty) {
+      _showValidationDialog('Task title is required');
+      return false;
+    }
+    if (kategoriNameTerpilih == null) {
+      _showValidationDialog('Please select a category');
+      return false;
+    }
+    if (prioritasNameTerpilih == null) {
+      _showValidationDialog('Please select a priority');
+      return false;
+    }
+    if (tanggalTerpilih == null) {
+      _showValidationDialog('Please select a date');
+      return false;
+    }
+    return true; // Waktu opsional
   }
-  if (kategoriNameTerpilih == null) {
-    _showValidationDialog('Please select a category');
-    return false;
-  }
-  if (prioritasNameTerpilih == null) {
-    _showValidationDialog('Please select a priority');
-    return false;
-  }
-  if (tanggalTerpilih == null) {
-    _showValidationDialog('Please select a date');
-    return false;
-  }
-  return true; // Waktu opsional
-}
 
-// Fungsi popup
-void _showValidationDialog(String message) {
-  showDialog(
-    context: context,
-    builder: (context) => Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      backgroundColor: Colors.transparent,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.35, // panjang ke samping
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: const Color(0xFFA0D7C8),
+  // Fungsi popup
+  void _showValidationDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Pesan
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF584A4A),
+        backgroundColor: Colors.transparent,
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.35, // panjang ke samping
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xFFA0D7C8),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Pesan
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF584A4A),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-            // Tombol OK di kanan bawah
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 105,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      'OK',
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF584A4A),
+              // Tombol OK di kanan bawah
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 105,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        'OK',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF584A4A),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   // Simpan task ke Supabase
-
   Future<void> _saveTask() async {
     if (!_validateTask()) return;
 
@@ -195,7 +191,7 @@ void _showValidationDialog(String message) {
         ),
       );
 
-      Navigator.pop(context); // Kembali ke halaman sebelumnya
+      Navigator.pop(context); // Kembali ke HomeScreen, triggers setState(() {}) there
     } catch (e) {
       Navigator.pop(context); // Close loading dialog
       ScaffoldMessenger.of(context).showSnackBar(

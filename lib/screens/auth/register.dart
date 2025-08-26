@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projek2_aplikasi_todolist/screens/auth/login.dart';
-import 'package:projek2_aplikasi_todolist/screens/home_screen.dart';
-import 'package:projek2_aplikasi_todolist/services/auth_services.dart';
+import 'package:todolist/screens/auth/login.dart';
+import 'package:todolist/screens/home_screen.dart';
+import 'package:todolist/services/auth_services.dart';
 
 class RegisterModal extends StatefulWidget {
   const RegisterModal({super.key});
@@ -334,48 +334,48 @@ class _RegisterModalState extends State<RegisterModal> {
   }
 }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    bool obscureText = false,
-    Widget? suffixIcon,
-    String? Function(String?)? validator,
-  }) {
-    return SizedBox(
-      width: 400,
-      height: 60,
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          labelStyle: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white),
-          labelText: label,
-          suffixIcon: suffixIcon,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: Colors.white, width: 3.0),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: Colors.white, width: 3.0),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: Colors.red, width: 3.0),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: Colors.red, width: 3.0),
-          ),
-        ),
-        validator: validator,
-      ),
-    );
-  }
+  // Widget _buildTextField({
+  //   required TextEditingController controller,
+  //   required String label,
+  //   required String hint,
+  //   bool obscureText = false,
+  //   Widget? suffixIcon,
+  //   String? Function(String?)? validator,
+  // }) {
+  //   return SizedBox(
+  //     width: 400,
+  //     height: 60,
+  //     child: TextFormField(
+  //       controller: controller,
+  //       obscureText: obscureText,
+  //       decoration: InputDecoration(
+  //         labelStyle: GoogleFonts.poppins(
+  //           color: Colors.white,
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.w600,
+  //         ),
+  //         hintText: hint,
+  //         hintStyle: const TextStyle(color: Colors.white),
+  //         labelText: label,
+  //         suffixIcon: suffixIcon,
+  //         enabledBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(20),
+  //           borderSide: const BorderSide(color: Colors.white, width: 3.0),
+  //         ),
+  //         focusedBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(20),
+  //           borderSide: const BorderSide(color: Colors.white, width: 3.0),
+  //         ),
+  //         errorBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(20),
+  //           borderSide: const BorderSide(color: Colors.red, width: 3.0),
+  //         ),
+  //         focusedErrorBorder: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(20),
+  //           borderSide: const BorderSide(color: Colors.red, width: 3.0),
+  //         ),
+  //       ),
+  //       validator: validator,
+  //     ),
+  //   );
+  // }
