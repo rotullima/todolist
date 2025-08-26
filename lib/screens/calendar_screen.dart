@@ -15,6 +15,15 @@ class _CalenderScreenState extends State<CalenderScreen> {
   late DateTime _selectedDate;
   late List<DateTime> _weekDates;
 
+  final Map<String, IconData> categoryIcons = {
+    'Religius': Icons.mosque,
+    'Personal': Icons.person,
+    'Healthy': Icons.directions_run,
+    'Shopping': Icons.shopping_bag,
+    'Work': Icons.work,
+    'Other': Icons.category,
+  };
+
   @override
   void initState() {
     super.initState();
@@ -22,7 +31,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
     _updateWeekDates();
   }
 
-  // Memperbarui daftar tanggal untuk seminggu
   void _updateWeekDates() {
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
@@ -30,19 +38,159 @@ class _CalenderScreenState extends State<CalenderScreen> {
         List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
   }
 
-  // Format tanggal untuk tampilan
   String _formatDate(DateTime date) {
     return DateFormat('d').format(date);
   }
 
-  // Format tanggal untuk header
   String _formatHeaderDate(DateTime date) {
     return DateFormat('MMMM, d yyyy').format(date);
   }
 
-  // Format tanggal untuk query Supabase (YYYY-MM-DD)
   String _formatSupabaseDate(DateTime date) {
     return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  void showTaskDetailDialog(Map<String, dynamic> task) {
+    final taskServices = TaskServices();
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, anim1, anim2) {
+        return Center(
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            backgroundColor: taskServices.priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
+            elevation: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.1),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          task['category_icon'] ?? Icons.category_outlined,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            task['title'] ?? 'Tidak ada judul',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      const Icon(Icons.priority_high, size: 20, color: Colors.white70),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Prioritas: ${task['priority'] ?? 'Tidak ada prioritas'}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today, size: 20, color: Colors.white70),
+                      const SizedBox(width: 8),
+                      Text(
+                        task['due_date'] != null && task['due_date'].isNotEmpty
+                            ? "${task['due_date']} ${task['due_time'] ?? ''}"
+                            : 'Tidak terjadwal',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.notes, size: 20, color: Colors.white70),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          task['notes'] != null && task['notes'].toString().trim().isNotEmpty
+                              ? task['notes'].toString()
+                              : 'Tidak ada catatan.',
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.teal,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Tutup',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, anim1, anim2, child) {
+        return Transform.scale(
+          scale: Curves.easeInOut.transform(anim1.value),
+          child: child,
+        );
+      },
+    );
   }
 
   @override
@@ -190,46 +338,57 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   itemBuilder: (context, index) {
                     final task = tasks[index];
                     final priorityName = (task['priority'] ?? 'Low') as String;
-                    return Container(
-                      width: 368,
-                      height: 71,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      margin: const EdgeInsets.only(bottom: 20),
-                      decoration: BoxDecoration(
-                        color: taskServices.priorityColors[priorityName] ??
-                            const Color(0xFFA0D7C8),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            task['due_time'].isNotEmpty
-                                ? task['due_time']
-                                : 'All day',
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: const Color(0xFF584A4A),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Text(
-                              task['title'],
+                    final categoryName = (task['categories']?['name'] ?? 'Other') as String;
+                    return GestureDetector(
+                      onTap: () => showTaskDetailDialog({
+                        ...task,
+                        'category_icon': categoryIcons[categoryName] ?? Icons.category,
+                        'priority': priorityName,
+                        'due_date': task['due_date'] ?? '',
+                        'due_time': task['due_time'] ?? '',
+                        'notes': task['notes'] ?? '',
+                      }),
+                      child: Container(
+                        width: 368,
+                        height: 71,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        margin: const EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          color: taskServices.priorityColors[priorityName] ??
+                              const Color(0xFFA0D7C8),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              task['due_time'].isNotEmpty
+                                  ? task['due_time']
+                                  : 'All day',
                               style: GoogleFonts.poppins(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
                                 color: const Color(0xFF584A4A),
                               ),
                             ),
-                          ),
-                          Icon(
-                            task['category_icon'],
-                            color: const Color(0xFF584A4A),
-                          ),
-                        ],
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: Text(
+                                task['title'],
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16,
+                                  color: const Color(0xFF584A4A),
+                                ),
+                              ),
+                            ),
+                            Icon(
+                              categoryIcons[categoryName] ?? Icons.category,
+                              color: const Color(0xFF584A4A),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

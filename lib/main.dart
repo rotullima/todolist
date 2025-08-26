@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projek2_aplikasi_todolist/screens/auth/splash_screen.dart';
+import 'package:projek2_aplikasi_todolist/screens/home_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 // import 'package:todolist/screens/home_screen.dart';
 void main() async {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:todolist/screens/auth/splash_screen.dart';
-import 'package:todolist/services/auth_services.dart';
+import 'package:projek2_aplikasi_todolist/screens/auth/splash_screen.dart';
+import 'package:projek2_aplikasi_todolist/services/auth_services.dart';
+
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});

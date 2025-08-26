@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:projek2_aplikasi_todolist/screens/task_done_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:todolist/screens/task_done_screen.dart'; // Asumsikan ini sudah ada
 
 class TaskTodoScreen extends StatefulWidget {
   const TaskTodoScreen({super.key});
@@ -14,10 +14,8 @@ class TaskTodoScreen extends StatefulWidget {
 }
 
 class _TaskTodoScreenState extends State<TaskTodoScreen> {
-  // List tasks akan diisi dari Supabase
   List<Map<String, dynamic>> tasks = [];
 
-  // Mapping icon berdasarkan category name (sesuaikan dengan categories di DB)
   final Map<String, IconData> categoryIcons = {
     'Religius': Icons.mosque,
     'Personal': Icons.person,
@@ -28,9 +26,9 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
   };
 
   final Map<String, Color> priorityColors = {
-  'High': const Color(0xFFE57373),   // merah soft
-  'Mid': const Color(0xFFFFD54F), // kuning soft
-  'Low': const Color(0xFF81C784),    // hijau soft
+    'High': const Color(0xFFE57373),
+    'Mid': const Color(0xFFFFD54F),
+    'Low': const Color(0xFF81C784),
   };
 
   @override
@@ -39,7 +37,6 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     _fetchTasks();
   }
 
-  // Fetch tasks dari Supabase, hanya yang belum completed dan milik user login
   Future<void> _fetchTasks() async {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) {
@@ -58,7 +55,7 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
             priorities (name)
           ''')
           .eq('user_id', user.id)
-          .eq('completed', false) // Hanya tampilkan yang belum done
+          .eq('completed', false)
           .order('created_at', ascending: true);
 
       setState(() {
@@ -67,12 +64,14 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
           final priorityName = task['priorities']['name'] ?? 'Low';
           final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
           return {
-            'id': task['id'], // Simpan ID untuk update/delete
+            'id': task['id'],
             'icon': categoryIcons[categoryName] ?? Icons.category,
             'title': task['title'],
             'subtitle': subtitle,
             'done': task['completed'] ?? false,
             'priority': priorityName,
+            'notes': task['notes'] ?? '',
+            'category': categoryName,
           };
         }).toList();
       });
@@ -83,7 +82,6 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     }
   }
 
-  // Format subtitle dari due_date dan due_time
   String _formatSubtitle(String? dueDate, String? dueTime) {
     if (dueDate == null) return '';
     final date = DateFormat('MMMM d, yyyy').format(DateTime.parse(dueDate));
@@ -91,14 +89,12 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     return '$date, $time';
   }
 
-  // Update status completed di Supabase
   Future<void> _updateTaskDone(String taskId, bool done) async {
     try {
       await Supabase.instance.client
           .from('tasks')
           .update({'completed': done})
           .eq('id', taskId);
-      // Refresh list setelah update
       _fetchTasks();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,11 +103,9 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     }
   }
 
-  // Hapus task dari Supabase
   Future<void> _deleteTask(String taskId) async {
     try {
       await Supabase.instance.client.from('tasks').delete().eq('id', taskId);
-      // Refresh list setelah delete
       _fetchTasks();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -143,9 +137,150 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     ).show();
   }
 
+  void showTaskDetailDialog(Map<String, dynamic> task) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, anim1, anim2) {
+        return Center(
+          child: Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            backgroundColor: priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
+            elevation: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.1),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          task['icon'] ?? Icons.category_outlined,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            task['title'] ?? 'Tidak ada judul',
+                            style: GoogleFonts.poppins(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      const Icon(Icons.priority_high, size: 20, color: Colors.white70),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Prioritas: ${task['priority'] ?? 'Tidak ada prioritas'}',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today, size: 20, color: Colors.white70),
+                      const SizedBox(width: 8),
+                      Text(
+                        task['subtitle'] != null && task['subtitle'].isNotEmpty
+                            ? task['subtitle']
+                            : 'Tidak terjadwal',
+                        style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.notes, size: 20, color: Colors.white70),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          task['notes'] != null && task['notes'].toString().trim().isNotEmpty
+                              ? task['notes'].toString()
+                              : 'Tidak ada catatan.',
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.teal,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Tutup',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, anim1, anim2, child) {
+        return Transform.scale(
+          scale: Curves.easeInOut.transform(anim1.value),
+          child: child,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Tanggal hari ini secara dinamis
     final currentDate = DateFormat('MMMM, d, yyyy').format(DateTime.now());
 
     return Scaffold(
@@ -153,7 +288,6 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
@@ -188,7 +322,7 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          currentDate, // Ganti ke tanggal dinamis
+                          currentDate,
                           style: GoogleFonts.poppins(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -202,8 +336,6 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                 ],
               ),
             ),
-
-            // Task List
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(30),
@@ -263,13 +395,13 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const TaskDoneScreen(),
+                                              builder: (context) => const TaskDoneScreen(),
                                             ),
                                           );
                                         }
                                       },
                                     ),
+                                    onTap: () => showTaskDetailDialog(task),
                                   ),
                                 ),
                               ),

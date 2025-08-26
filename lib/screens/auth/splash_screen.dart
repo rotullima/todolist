@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todolist/screens/auth/login.dart';
-import 'package:todolist/screens/auth/register.dart';
+import 'package:projek2_aplikasi_todolist/screens/auth/login.dart';
+import 'package:projek2_aplikasi_todolist/screens/auth/register.dart';
+
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
