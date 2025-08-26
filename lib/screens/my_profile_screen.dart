@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:projek2_aplikasi_todolist/screens/auth/splash_screen.dart';
 import 'package:projek2_aplikasi_todolist/services/auth_services.dart';
 
-
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({super.key});
 
@@ -18,6 +17,35 @@ class _MyProfileScreen extends State<MyProfileScreen> {
   final AuthServices authServices = AuthServices();
   Map<String, dynamic>? userProfile;
   bool isLoading = true;
+
+  InputDecoration _inputDecoration(String label, String hint) {
+  return InputDecoration(
+    labelStyle: const TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    ),
+    hintText: hint,
+    hintStyle: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
+    labelText: label,
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: const BorderSide(color: Colors.white, width: 3.0),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: const BorderSide(color: Colors.white, width: 3.0),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: const BorderSide(color: Colors.red, width: 3.0),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: const BorderSide(color: Colors.red, width: 3.0),
+    ),
+  );
+}
 
   @override
   void initState() {
@@ -95,7 +123,8 @@ class _MyProfileScreen extends State<MyProfileScreen> {
   String get formatWaktu {
     if (waktuTerpilih == null) return 'Not set';
     final now = DateTime.now();
-    final dt = DateTime(now.year, now.month, now.day, waktuTerpilih!.hour, waktuTerpilih!.minute);
+    final dt = DateTime(now.year, now.month, now.day, waktuTerpilih!.hour,
+        waktuTerpilih!.minute);
     return DateFormat('HH:mm').format(dt);
   }
 
@@ -183,224 +212,223 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                                   ),
                                 ),
                                 SizedBox(height: screenHeight * 0.01),
-                                GestureDetector(
-                                  onTap: () {
+                                ElevatedButton(
+                                  onPressed: () {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
-                                        final nameController = TextEditingController(
-                                            text: userProfile?['name'] ?? '');
-                                        final bioController = TextEditingController(
-                                            text: userProfile?['bio'] ?? '');
-                                        final phoneController = TextEditingController(
-                                            text: userProfile?['nomer_hp'] ?? '');
+                                        final formKey = GlobalKey<FormState>();
+
+                                        final nameController =
+                                            TextEditingController(
+                                                text:
+                                                    userProfile?['name'] ?? '');
+                                        final bioController =
+                                            TextEditingController(
+                                                text:
+                                                    userProfile?['bio'] ?? '');
+                                        final phoneController =
+                                            TextEditingController(
+                                                text:
+                                                    userProfile?['nomer_hp'] ??
+                                                        '');
+
                                         return Dialog(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                           ),
-                                          elevation: 10,
                                           backgroundColor: Colors.transparent,
                                           child: FractionallySizedBox(
-                                            widthFactor: isSmallScreen ? 0.9 : 0.7,
+                                            widthFactor:
+                                                isSmallScreen ? 0.9 : 0.7,
                                             child: Container(
                                               padding: const EdgeInsets.all(15),
                                               decoration: BoxDecoration(
                                                 color: const Color(0xFFA0D7C8),
-                                                borderRadius: BorderRadius.circular(20),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                    color: Colors.black26,
-                                                    blurRadius: 10,
-                                                    offset: Offset(0, 5),
-                                                  ),
-                                                ],
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
                                               ),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    "Edit Profile",
-                                                    style: GoogleFonts.poppins(
-                                                      fontSize: isSmallScreen ? 20 : 24,
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.02),
-                                                  TextField(
-                                                    controller: nameController,
-                                                    decoration: InputDecoration(
-                                                      labelStyle: const TextStyle(
+                                              child: Form(
+                                                key: formKey,
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      "Edit Profile",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: isSmallScreen
+                                                            ? 20
+                                                            : 24,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.white,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                      hintText: "Enter name",
-                                                      hintStyle: GoogleFonts.poppins(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                      ),
-                                                      labelText: "Name",
-                                                      enabledBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        borderSide: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3.0,
-                                                        ),
-                                                      ),
-                                                      focusedBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        borderSide: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3.0,
-                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.015),
-                                                  TextField(
-                                                    controller: bioController,
-                                                    decoration: InputDecoration(
-                                                      labelStyle: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                      hintText: "Enter bio",
-                                                      hintStyle: GoogleFonts.poppins(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                      ),
-                                                      labelText: "Bio",
-                                                      enabledBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        borderSide: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3.0,
-                                                        ),
-                                                      ),
-                                                      focusedBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        borderSide: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3.0,
-                                                        ),
-                                                      ),
+                                                    SizedBox(
+                                                        height: screenHeight *
+                                                            0.02),
+
+                                                    // Name
+                                                    TextFormField(
+                                                      controller:
+                                                          nameController,
+                                                      decoration:
+                                                          _inputDecoration(
+                                                              "Name",
+                                                              "Enter name"),
+                                                      validator: (value) =>
+                                                          value == null ||
+                                                                  value.isEmpty
+                                                              ? "Name cannot be empty"
+                                                              : null,
                                                     ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.015),
-                                                  GestureDetector(
-                                                    child: TextField(
-                                                      readOnly: true,
-                                                      controller: TextEditingController(
-                                                        text: formatTanggal,
-                                                      ),
+                                                    SizedBox(
+                                                        height: screenHeight *
+                                                            0.015),
+
+                                                    // Bio
+                                                    TextFormField(
+                                                      controller: bioController,
+                                                      decoration:
+                                                          _inputDecoration(
+                                                              "Bio",
+                                                              "Enter bio"),
+                                                      validator: (value) =>
+                                                          value == null ||
+                                                                  value.isEmpty
+                                                              ? "Bio cannot be empty"
+                                                              : null,
+                                                    ),
+                                                    SizedBox(
+                                                        height: screenHeight *
+                                                            0.015),
+
+                                                    // Birth Date
+                                                    GestureDetector(
                                                       onTap: () async {
-                                                        final DateTime? terpilih =
+                                                        final DateTime?
+                                                            terpilih =
                                                             await showDatePicker(
                                                           context: context,
-                                                          initialDate: tanggalTerpilih ??
-                                                              DateTime.now(),
-                                                          firstDate: DateTime(2000),
-                                                          lastDate: DateTime(2100),
+                                                          initialDate:
+                                                              tanggalTerpilih ??
+                                                                  DateTime
+                                                                      .now(),
+                                                          firstDate:
+                                                              DateTime(2000),
+                                                          lastDate:
+                                                              DateTime(2100),
                                                         );
                                                         if (terpilih != null) {
                                                           setState(() {
-                                                            tanggalTerpilih = terpilih;
+                                                            tanggalTerpilih =
+                                                                terpilih;
                                                           });
                                                         }
                                                       },
-                                                      decoration: InputDecoration(
-                                                        labelStyle: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w600,
-                                                        ),
-                                                        hintText: "Select birth date",
-                                                        hintStyle: GoogleFonts.poppins(
-                                                          color: Colors.white,
-                                                          fontSize: 16,
-                                                        ),
-                                                        labelText: "Birth Date",
-                                                        enabledBorder: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.circular(20),
-                                                          borderSide: const BorderSide(
-                                                            color: Colors.white,
-                                                            width: 3.0,
+                                                      child: AbsorbPointer(
+                                                        child: TextFormField(
+                                                          readOnly: true,
+                                                          controller:
+                                                              TextEditingController(
+                                                            text: formatTanggal,
                                                           ),
-                                                        ),
-                                                        focusedBorder: OutlineInputBorder(
-                                                          borderRadius: BorderRadius.circular(20),
-                                                          borderSide: const BorderSide(
-                                                            color: Colors.white,
-                                                            width: 3.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.015),
-                                                  TextField(
-                                                    controller: phoneController,
-                                                    decoration: InputDecoration(
-                                                      labelStyle: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                      hintText: "Enter phone number",
-                                                      hintStyle: GoogleFonts.poppins(
-                                                        color: Colors.white,
-                                                        fontSize: 16,
-                                                      ),
-                                                      labelText: "Phone Number",
-                                                      enabledBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        borderSide: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3.0,
-                                                        ),
-                                                      ),
-                                                      focusedBorder: OutlineInputBorder(
-                                                        borderRadius: BorderRadius.circular(20),
-                                                        borderSide: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 3.0,
+                                                          decoration:
+                                                              _inputDecoration(
+                                                                  "Birth Date",
+                                                                  "Select birth date"),
+                                                          validator: (_) =>
+                                                              tanggalTerpilih ==
+                                                                      null
+                                                                  ? "Birth date must be selected"
+                                                                  : null,
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.02),
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      Navigator.pop(context);
-                                                      await _updateUserProfile(
-                                                        name: nameController.text,
-                                                        bio: bioController.text,
-                                                        birthDate: tanggalTerpilih?.toIso8601String(),
-                                                        phoneNumber: phoneController.text,
-                                                      );
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: const Color(0xFF4CAF50),
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(15),
-                                                      ),
-                                                      padding: EdgeInsets.symmetric(
-                                                        horizontal: screenWidth * 0.08,
-                                                        vertical: screenHeight * 0.015,
-                                                      ),
+                                                    SizedBox(
+                                                        height: screenHeight *
+                                                            0.015),
+
+                                                    // Phone
+                                                    TextFormField(
+                                                      controller:
+                                                          phoneController,
+                                                      decoration: _inputDecoration(
+                                                          "Phone Number",
+                                                          "Enter phone number"),
+                                                      validator: (value) =>
+                                                          value == null ||
+                                                                  value.isEmpty
+                                                              ? "Phone number cannot be empty"
+                                                              : null,
                                                     ),
-                                                    child: Text(
-                                                      "Save",
-                                                      style: GoogleFonts.poppins(
-                                                        fontSize: isSmallScreen ? 12 : 14,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Colors.white,
+                                                    SizedBox(
+                                                        height: screenHeight *
+                                                            0.02),
+
+                                                    // Submit
+                                                    ElevatedButton(
+                                                      onPressed: () async {
+                                                        if (!formKey
+                                                            .currentState!
+                                                            .validate()) return;
+
+                                                        Navigator.pop(context);
+                                                        await _updateUserProfile(
+                                                          name: nameController
+                                                              .text
+                                                              .trim(),
+                                                          bio: bioController
+                                                              .text
+                                                              .trim(),
+                                                          birthDate: tanggalTerpilih
+                                                              ?.toIso8601String(),
+                                                          phoneNumber:
+                                                              phoneController
+                                                                  .text
+                                                                  .trim(),
+                                                        );
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                          horizontal:
+                                                              screenWidth *
+                                                                  0.05,
+                                                          vertical:
+                                                              screenHeight *
+                                                                  0.015,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                ],
+                                                      child: Text(
+                                                        "Edit Profile",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          fontSize:
+                                                              isSmallScreen
+                                                                  ? 16
+                                                                  : 18,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: const Color(
+                                                              0xFFA0D7C8),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -413,8 +441,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                                     style: GoogleFonts.poppins(
                                       fontSize: isSmallScreen ? 16 : 20,
                                       fontWeight: FontWeight.w500,
-                                      color: const Color(0xFF584A4A),
-                                      decoration: TextDecoration.underline,
+                                      color: Color.fromARGB(255, 0, 0, 0),
                                     ),
                                   ),
                                 ),
@@ -464,8 +491,9 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                             context,
                             label: "Birth Date",
                             value: userProfile?['tanggal_lahir'] != null
-                                ? DateFormat('dd MMMM yyyy')
-                                    .format(DateTime.parse(userProfile!['tanggal_lahir']))
+                                ? DateFormat('dd MMMM yyyy').format(
+                                    DateTime.parse(
+                                        userProfile!['tanggal_lahir']))
                                 : 'Not set',
                             icon: Icons.calendar_month_outlined,
                             isSmallScreen: isSmallScreen,
@@ -521,7 +549,9 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                                     await authServices.signOut();
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (context) => const SplashScreen()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SplashScreen()),
                                       (Route<dynamic> route) => false,
                                     );
                                     ScaffoldMessenger.of(context).showSnackBar(
