@@ -182,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: FutureBuilder<List<int>>(
                         future: Future.wait([
-                          taskServices.getUserTaskCount(),
+                          taskServices.getUserTaskCountToday(),
                           taskServices.getUserDoneTaskCount()
                         ]),
                         builder: (context, snapshot) {
@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: const Color(0xFFA0D7C8),
                             icon: Icons.check_circle_outline,
                             title: 'To Do Done',
-                            subtitle: '$total Task | $done Task Done',
+                            subtitle: '$total Task | $done Task Done Today',
                           );
                         },
                       ),

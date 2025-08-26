@@ -70,16 +70,41 @@ class TaskServices {
     return data.length;
   }
 
-  // Hitung jumlah task yang belum selesai
-  Future<int> getUserPendingTaskCount() async {
+  // Hitung jumlah semua task MILIK USER untuk HARI INI
+  Future<int> getUserTaskCountToday() async {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
+
+    // Format tanggal hari ini (YYYY-MM-DD)
+    final today = DateTime.now();
+    final formattedToday =
+        "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
     final data = await supabase
         .from('tasks')
         .select('id')
         .eq('user_id', user.id)
-        .eq('completed', false);
+        .eq('due_date', formattedToday); // filter tanggal hari ini
+
+    return data.length;
+  }
+
+  // Hitung jumlah task yang belum selesai
+  Future<int> getUserPendingTaskCount() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) throw Exception("User not logged in");
+
+    // Ambil tanggal hari ini dalam format YYYY-MM-DD
+    final today = DateTime.now();
+    final formattedToday =
+        "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
+    final data = await supabase
+        .from('tasks')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('completed', false)
+        .eq('due_date', formattedToday); // filter hanya hari ini
 
     return data.length;
   }
@@ -89,11 +114,17 @@ class TaskServices {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
 
+    // Format tanggal hari ini (YYYY-MM-DD)
+    final today = DateTime.now();
+    final formattedToday =
+        "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
     final data = await supabase
         .from('tasks')
         .select('id')
         .eq('user_id', user.id)
-        .eq('completed', true);
+        .eq('completed', true)
+        .eq('due_date', formattedToday); // filter tanggal hari ini
 
     return data.length;
   }
@@ -123,15 +154,54 @@ class TaskServices {
     };
 
     return tasksData.map<Map<String, dynamic>>((task) {
-      final categoryName = categoryMap[task['category_id'].toString()] ?? 'Other';
+      final categoryName =
+          categoryMap[task['category_id'].toString()] ?? 'Other';
       final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
 
       return {
         'title': task['title'],
         'due_date': task['due_date'],
         'due_time': task['due_time'],
-        'category_icon':
-            categoryIcons[categoryName] ?? Icons.category_outlined,
+        'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
+        'priority': priorityName,
+        'notes': task['notes'],
+      };
+    }).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getUserCompletedTasksByDate(
+      String dueDate) async {
+    final user = supabase.auth.currentUser;
+    if (user == null) throw Exception("User not logged in");
+
+    final tasksData = await supabase
+        .from('tasks')
+        .select('title, due_date, due_time, category_id, priority_id, notes')
+        .eq('user_id', user.id)
+        .eq('completed', true) // cuma yang selesai
+        .eq('due_date', dueDate) // filter tanggal
+        .order('due_time', ascending: true);
+
+    final categoriesData = await supabase.from('categories').select('id, name');
+    final categoryMap = {
+      for (var c in categoriesData) c['id'].toString(): c['name'] as String
+    };
+
+    final prioritiesData = await supabase.from('priorities').select('id, name');
+    final priorityMap = {
+      for (var p in prioritiesData) p['id'].toString(): p['name'] as String
+    };
+
+    return tasksData.map<Map<String, dynamic>>((task) {
+      final categoryName =
+          categoryMap[task['category_id'].toString()] ?? 'Other';
+      final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
+
+      return {
+        'title': task['title'],
+        'due_date': task['due_date'],
+        'due_time': task['due_time'],
+        'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
         'priority': priorityName,
         'notes': task['notes'],
       };
@@ -149,8 +219,7 @@ class TaskServices {
         .eq('due_date', dueDate)
         .order('due_time', ascending: true);
 
-    final categoriesData =
-        await supabase.from('categories').select('id, name');
+    final categoriesData = await supabase.from('categories').select('id, name');
     final categoryMap = {
       for (var c in categoriesData) c['id'].toString(): c['name'] as String
     };
@@ -163,14 +232,12 @@ class TaskServices {
     return tasks.map<Map<String, dynamic>>((task) {
       final categoryName =
           categoryMap[task['category_id'].toString()] ?? 'Other';
-      final priorityName =
-          priorityMap[task['priority_id'].toString()] ?? 'Low';
+      final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
       return {
         'title': task['title'],
         'due_date': task['due_date'],
         'due_time': task['due_time'] ?? '',
-        'category_icon':
-            categoryIcons[categoryName] ?? Icons.category_outlined,
+        'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
         'priority': priorityName,
         'notes': task['notes'],
       };
@@ -190,8 +257,7 @@ class TaskServices {
         .eq('completed', false);
 
     // Ambil kategori sekali
-    final categoriesData =
-        await supabase.from('categories').select('id, name');
+    final categoriesData = await supabase.from('categories').select('id, name');
 
     final categoryMap = {
       for (var c in categoriesData) c['id'].toString(): c['name'] as String
@@ -204,8 +270,7 @@ class TaskServices {
         'title': task['title'],
         'due_date': task['due_date'],
         'due_time': task['due_time'],
-        'category_icon':
-            categoryIcons[categoryName] ?? Icons.category_outlined,
+        'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
       };
     }).toList();
   }

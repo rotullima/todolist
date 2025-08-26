@@ -37,50 +37,54 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     _fetchTasks();
   }
 
-  Future<void> _fetchTasks() async {
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please login to view tasks')),
-      );
-      return;
-    }
-
-    try {
-      final response = await Supabase.instance.client
-          .from('tasks')
-          .select('''
-            id, title, due_date, due_time, completed, notes,
-            categories (name),
-            priorities (name)
-          ''')
-          .eq('user_id', user.id)
-          .eq('completed', false)
-          .order('created_at', ascending: true);
-
-      setState(() {
-        tasks = response.map((task) {
-          final categoryName = task['categories']['name'] ?? 'Other';
-          final priorityName = task['priorities']['name'] ?? 'Low';
-          final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
-          return {
-            'id': task['id'],
-            'icon': categoryIcons[categoryName] ?? Icons.category,
-            'title': task['title'],
-            'subtitle': subtitle,
-            'done': task['completed'] ?? false,
-            'priority': priorityName,
-            'notes': task['notes'] ?? '',
-            'category': categoryName,
-          };
-        }).toList();
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load tasks: $e')),
-      );
-    }
+Future<void> _fetchTasks() async {
+  final user = Supabase.instance.client.auth.currentUser;
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please login to view tasks')),
+    );
+    return;
   }
+
+  try {
+    // 🔹 Ambil tanggal hari ini dalam format YYYY-MM-DD (sesuai database)
+    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    final response = await Supabase.instance.client
+        .from('tasks')
+        .select('''
+          id, title, due_date, due_time, completed, notes,
+          categories (name),
+          priorities (name)
+        ''')
+        .eq('user_id', user.id)
+        .eq('completed', false)
+        .eq('due_date', today) // 🔥 filter by today
+        .order('created_at', ascending: true);
+
+    setState(() {
+      tasks = response.map((task) {
+        final categoryName = task['categories']['name'] ?? 'Other';
+        final priorityName = task['priorities']['name'] ?? 'Low';
+        final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
+        return {
+          'id': task['id'],
+          'icon': categoryIcons[categoryName] ?? Icons.category,
+          'title': task['title'],
+          'subtitle': subtitle,
+          'done': task['completed'] ?? false,
+          'priority': priorityName,
+          'notes': task['notes'] ?? '',
+          'category': categoryName,
+        };
+      }).toList();
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to load tasks: $e')),
+    );
+  }
+}
 
   String _formatSubtitle(String? dueDate, String? dueTime) {
     if (dueDate == null) return '';
