@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             screenWidth: screenWidth,
                             color: const Color(0xFFA0D7C8),
                             icon: Icons.assignment_outlined,
-                            title: 'To Do',
+                            title: 'To Do List',
                             subtitle: '${snapshot.data} Task Now',
                           );
                         },
@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             screenWidth: screenWidth,
                             color: const Color(0xFFA0D7C8),
                             icon: Icons.check_circle_outline,
-                            title: 'Done',
+                            title: 'To Do Done',
                             subtitle: '$total Task | $done Task Done',
                           );
                         },

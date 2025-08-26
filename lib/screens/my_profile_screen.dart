@@ -19,33 +19,33 @@ class _MyProfileScreen extends State<MyProfileScreen> {
   bool isLoading = true;
 
   InputDecoration _inputDecoration(String label, String hint) {
-  return InputDecoration(
-    labelStyle: const TextStyle(
-      color: Colors.white,
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-    ),
-    hintText: hint,
-    hintStyle: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
-    labelText: label,
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: const BorderSide(color: Colors.white, width: 3.0),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: const BorderSide(color: Colors.white, width: 3.0),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: const BorderSide(color: Colors.red, width: 3.0),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-      borderSide: const BorderSide(color: Colors.red, width: 3.0),
-    ),
-  );
-}
+    return InputDecoration(
+      labelStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+      hintText: hint,
+      hintStyle: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
+      labelText: label,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: const BorderSide(color: Colors.white, width: 3.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: const BorderSide(color: Colors.white, width: 3.0),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: const BorderSide(color: Colors.red, width: 3.0),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: const BorderSide(color: Colors.red, width: 3.0),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -547,26 +547,47 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                                 TextButton(
                                   onPressed: () async {
                                     await authServices.signOut();
-                                    Navigator.of(context).pop();
+                                    Navigator.of(context)
+                                        .pop(); // close confirm dialog
                                     Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SplashScreen()),
+                                        builder: (context) =>
+                                            const SplashScreen(),
+                                      ),
                                       (Route<dynamic> route) => false,
                                     );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          "Logged out successfully.",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: isSmallScreen ? 15 : 17,
-                                            fontWeight: FontWeight.w500,
+
+                                    // 🔹 ganti snackbar dengan popup auto-dismiss
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) {
+                                        Future.delayed(
+                                            const Duration(seconds: 2), () {
+                                          if (Navigator.of(context).canPop()) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        });
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                           ),
-                                        ),
-                                        backgroundColor: Colors.redAccent,
-                                        duration: const Duration(seconds: 1),
-                                      ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20),
+                                            child: Text(
+                                              "Logged out successfully.",
+                                              style: GoogleFonts.poppins(
+                                                fontSize:
+                                                    isSmallScreen ? 15 : 17,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black87,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
                                   child: Text(
@@ -603,7 +624,7 @@ class _MyProfileScreen extends State<MyProfileScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.02),
+                    SizedBox(height: screenHeight * 0.03),
                   ],
                 ),
               ),

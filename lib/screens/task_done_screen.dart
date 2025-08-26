@@ -39,7 +39,7 @@
                     ),
                     Expanded(
                       child: Text(
-                        'Done To Do',
+                        'To Do Done',
                         style: GoogleFonts.poppins(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
@@ -173,14 +173,14 @@
                                               Row(
                                                 children: [
                                                   const Icon(Icons.priority_high,
-                                                      size: 20, color: Colors.white70),
+                                                      size: 20, color: Colors.white),
                                                   const SizedBox(width: 8),
                                                   Text(
                                                     'Prioritas: ${task['priority'] ?? 'Tidak ada prioritas'}',
                                                     style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       fontWeight: FontWeight.w500,
-                                                      color: Colors.white70,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                 ],
@@ -191,7 +191,7 @@
                                               Row(
                                                 children: [
                                                   const Icon(Icons.calendar_today,
-                                                      size: 20, color: Colors.white70),
+                                                      size: 20, color: Colors.white),
                                                   const SizedBox(width: 8),
                                                   Text(
                                                     task['due_date'] != null
@@ -200,7 +200,7 @@
                                                     style: GoogleFonts.poppins(
                                                       fontSize: 15,
                                                       fontWeight: FontWeight.w500,
-                                                      color: Colors.white70,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                 ],
@@ -211,7 +211,7 @@
                                               Row(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  const Icon(Icons.notes, size: 20, color: Colors.white70),
+                                                  const Icon(Icons.notes, size: 20, color: Colors.white),
                                                   const SizedBox(width: 8),
                                                   Expanded(
                                                     child: Text(
@@ -222,7 +222,7 @@
                                                       style: GoogleFonts.poppins(
                                                         fontSize: 15,
                                                         fontWeight: FontWeight.w400,
-                                                        color: Colors.white70,
+                                                        color: Colors.white,
                                                       ),
                                                     ),
                                                   ),
