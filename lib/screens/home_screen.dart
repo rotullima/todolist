@@ -206,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CalenderScreen(),
+                            builder: (context) => const CalendarScreen(),
                           ),
                         );
                         setState(() {}); // refresh

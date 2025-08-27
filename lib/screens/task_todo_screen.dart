@@ -37,54 +37,54 @@ class _TaskTodoScreenState extends State<TaskTodoScreen> {
     _fetchTasks();
   }
 
-Future<void> _fetchTasks() async {
-  final user = Supabase.instance.client.auth.currentUser;
-  if (user == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please login to view tasks')),
-    );
-    return;
-  }
+  Future<void> _fetchTasks() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please login to view tasks')),
+      );
+      return;
+    }
 
-  try {
-    // 🔹 Ambil tanggal hari ini dalam format YYYY-MM-DD (sesuai database)
-    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    try {
+      // 🔹 Ambil tanggal hari ini dalam format YYYY-MM-DD (sesuai database)
+      final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-    final response = await Supabase.instance.client
-        .from('tasks')
-        .select('''
+      final response = await Supabase.instance.client
+          .from('tasks')
+          .select('''
           id, title, due_date, due_time, completed, notes,
           categories (name),
           priorities (name)
         ''')
-        .eq('user_id', user.id)
-        .eq('completed', false)
-        .eq('due_date', today) // 🔥 filter by today
-        .order('created_at', ascending: true);
+          .eq('user_id', user.id)
+          .eq('completed', false)
+          .eq('due_date', today) // 🔥 filter by today
+          .order('created_at', ascending: true);
 
-    setState(() {
-      tasks = response.map((task) {
-        final categoryName = task['categories']['name'] ?? 'Other';
-        final priorityName = task['priorities']['name'] ?? 'Low';
-        final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
-        return {
-          'id': task['id'],
-          'icon': categoryIcons[categoryName] ?? Icons.category,
-          'title': task['title'],
-          'subtitle': subtitle,
-          'done': task['completed'] ?? false,
-          'priority': priorityName,
-          'notes': task['notes'] ?? '',
-          'category': categoryName,
-        };
-      }).toList();
-    });
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to load tasks: $e')),
-    );
+      setState(() {
+        tasks = response.map((task) {
+          final categoryName = task['categories']['name'] ?? 'Other';
+          final priorityName = task['priorities']['name'] ?? 'Low';
+          final subtitle = _formatSubtitle(task['due_date'], task['due_time']);
+          return {
+            'id': task['id'],
+            'icon': categoryIcons[categoryName] ?? Icons.category,
+            'title': task['title'],
+            'subtitle': subtitle,
+            'done': task['completed'] ?? false,
+            'priority': priorityName,
+            'notes': task['notes'] ?? '',
+            'category': categoryName,
+          };
+        }).toList();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load tasks: $e')),
+      );
+    }
   }
-}
 
   String _formatSubtitle(String? dueDate, String? dueTime) {
     if (dueDate == null) return '';
@@ -97,8 +97,7 @@ Future<void> _fetchTasks() async {
     try {
       await Supabase.instance.client
           .from('tasks')
-          .update({'completed': done})
-          .eq('id', taskId);
+          .update({'completed': done}).eq('id', taskId);
       _fetchTasks();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -154,7 +153,8 @@ Future<void> _fetchTasks() async {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
-            backgroundColor: priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
+            backgroundColor:
+                priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
             elevation: 10,
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -162,7 +162,8 @@ Future<void> _fetchTasks() async {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.1),
                       borderRadius: const BorderRadius.only(
@@ -195,7 +196,8 @@ Future<void> _fetchTasks() async {
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      const Icon(Icons.priority_high, size: 20, color: Colors.white),
+                      const Icon(Icons.priority_high,
+                          size: 20, color: Colors.white),
                       const SizedBox(width: 8),
                       Text(
                         'Prioritas: ${task['priority'] ?? 'Tidak ada prioritas'}',
@@ -210,7 +212,8 @@ Future<void> _fetchTasks() async {
                   const SizedBox(height: 15),
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 20, color: Colors.white),
+                      const Icon(Icons.calendar_today,
+                          size: 20, color: Colors.white),
                       const SizedBox(width: 8),
                       Text(
                         task['subtitle'] != null && task['subtitle'].isNotEmpty
@@ -232,7 +235,8 @@ Future<void> _fetchTasks() async {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          task['notes'] != null && task['notes'].toString().trim().isNotEmpty
+                          task['notes'] != null &&
+                                  task['notes'].toString().trim().isNotEmpty
                               ? task['notes'].toString()
                               : 'Tidak ada catatan.',
                           style: GoogleFonts.poppins(
@@ -255,7 +259,8 @@ Future<void> _fetchTasks() async {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 2,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                       ),
                       onPressed: () => Navigator.pop(context),
                       child: Text(
@@ -366,7 +371,8 @@ Future<void> _fetchTasks() async {
                                   ],
                                 ),
                                 child: Card(
-                                  color: priorityColors[task['priority']] ?? const Color(0xFFA0D7C8),
+                                  color: priorityColors[task['priority']] ??
+                                      const Color(0xFFA0D7C8),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -391,15 +397,24 @@ Future<void> _fetchTasks() async {
                                     subtitle: Text(task['subtitle']),
                                     trailing: Checkbox(
                                       value: task['done'],
-                                      onChanged: (bool? value) {
+                                      onChanged: (bool? value) async {
                                         final newValue = value ?? false;
                                         final taskId = tasks[index]['id'];
-                                        _updateTaskDone(taskId, newValue);
+
+                                        // update ke database
+                                        await _updateTaskDone(taskId, newValue);
+
+                                        // refresh data dari database
+                                        setState(() {
+                                          _fetchTasks(); // fungsi untuk ambil ulang data
+                                        });
+
                                         if (newValue) {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => const TaskDoneScreen(),
+                                              builder: (context) =>
+                                                  const TaskDoneScreen(),
                                             ),
                                           );
                                         }

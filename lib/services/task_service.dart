@@ -2,7 +2,23 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/material.dart';
 
 class TaskServices {
-  final supabase = Supabase.instance.client;
+  final SupabaseClient supabase = Supabase.instance.client;
+
+  // Mapping kategori ke icon
+  final Map<String, IconData> categoryIcons = {
+    'Work': Icons.work_outline,
+    'Study': Icons.school_outlined,
+    'Personal': Icons.person_outline,
+    'Shopping': Icons.shopping_cart_outlined,
+    'Other': Icons.category_outlined,
+  };
+
+  // Mapping prioritas ke warna
+  final Map<String, Color> priorityColors = {
+    'High': const Color.fromARGB(255, 237, 150, 150), // merah soft
+    'Mid': const Color.fromARGB(255, 244, 218, 132), // kuning soft
+    'Low': const Color.fromARGB(255, 149, 223, 153), // hijau soft
+  };
 
   // Ambil semua category
   Future<Map<String, String>> getCategories() async {
@@ -44,33 +60,20 @@ class TaskServices {
     });
   }
 
-  // Mapping kategori ke icon
-  final Map<String, IconData> categoryIcons = {
-    'Work': Icons.work_outline,
-    'Study': Icons.school_outlined,
-    'Personal': Icons.person_outline,
-    'Shopping': Icons.shopping_cart_outlined,
-    'Other': Icons.category_outlined,
-  };
-
-  final Map<String, Color> priorityColors = {
-    'High': const Color.fromARGB(255, 237, 150, 150), // merah soft
-    'Mid': const Color.fromARGB(255, 244, 218, 132), // kuning soft
-    'Low': const Color.fromARGB(255, 149, 223, 153), // hijau soft
-  };
-
   // Hitung jumlah semua task milik user
   Future<int> getUserTaskCount() async {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
 
-    final data =
-        await supabase.from('tasks').select('id').eq('user_id', user.id);
+    final response = await supabase
+        .from('tasks')
+        .select('id')
+        .eq('user_id', user.id);
 
-    return data.length;
+    return response.length;
   }
 
-  // Hitung jumlah semua task MILIK USER untuk HARI INI
+  // Hitung jumlah semua task milik user untuk hari ini
   Future<int> getUserTaskCountToday() async {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
@@ -80,16 +83,16 @@ class TaskServices {
     final formattedToday =
         "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
-    final data = await supabase
+    final response = await supabase
         .from('tasks')
         .select('id')
         .eq('user_id', user.id)
-        .eq('due_date', formattedToday); // filter tanggal hari ini
+        .eq('due_date', formattedToday);
 
-    return data.length;
+    return response.length;
   }
 
-  // Hitung jumlah task yang belum selesai
+  // Hitung jumlah task yang belum selesai untuk hari ini
   Future<int> getUserPendingTaskCount() async {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
@@ -99,17 +102,17 @@ class TaskServices {
     final formattedToday =
         "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
-    final data = await supabase
+    final response = await supabase
         .from('tasks')
         .select('id')
         .eq('user_id', user.id)
         .eq('completed', false)
-        .eq('due_date', formattedToday); // filter hanya hari ini
+        .eq('due_date', formattedToday);
 
-    return data.length;
+    return response.length;
   }
 
-  // Hitung jumlah task yang sudah selesai
+  // Hitung jumlah task yang sudah selesai untuk hari ini
   Future<int> getUserDoneTaskCount() async {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
@@ -119,14 +122,14 @@ class TaskServices {
     final formattedToday =
         "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
 
-    final data = await supabase
+    final response = await supabase
         .from('tasks')
         .select('id')
         .eq('user_id', user.id)
         .eq('completed', true)
-        .eq('due_date', formattedToday); // filter tanggal hari ini
+        .eq('due_date', formattedToday);
 
-    return data.length;
+    return response.length;
   }
 
   // Ambil semua task yang sudah selesai
@@ -134,15 +137,13 @@ class TaskServices {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
 
-    // Ambil task selesai, termasuk notes
     final tasksData = await supabase
         .from('tasks')
         .select('title, due_date, due_time, category_id, priority_id, notes')
         .eq('user_id', user.id)
         .eq('completed', true)
-        .order('created_at', ascending: true);
+        .order('due_date', ascending: true);
 
-    // Ambil kategori sekali
     final categoriesData = await supabase.from('categories').select('id, name');
     final categoryMap = {
       for (var c in categoriesData) c['id'].toString(): c['name'] as String
@@ -161,14 +162,15 @@ class TaskServices {
       return {
         'title': task['title'],
         'due_date': task['due_date'],
-        'due_time': task['due_time'],
+        'due_time': task['due_time'] ?? '',
         'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
         'priority': priorityName,
-        'notes': task['notes'],
+        'notes': task['notes'] ?? '',
       };
     }).toList();
   }
 
+  // Ambil semua task yang sudah selesai berdasarkan tanggal
   Future<List<Map<String, dynamic>>> getUserCompletedTasksByDate(
       String dueDate) async {
     final user = supabase.auth.currentUser;
@@ -178,8 +180,8 @@ class TaskServices {
         .from('tasks')
         .select('title, due_date, due_time, category_id, priority_id, notes')
         .eq('user_id', user.id)
-        .eq('completed', true) // cuma yang selesai
-        .eq('due_date', dueDate) // filter tanggal
+        .eq('completed', true)
+        .eq('due_date', dueDate)
         .order('due_time', ascending: true);
 
     final categoriesData = await supabase.from('categories').select('id, name');
@@ -200,19 +202,20 @@ class TaskServices {
       return {
         'title': task['title'],
         'due_date': task['due_date'],
-        'due_time': task['due_time'],
+        'due_time': task['due_time'] ?? '',
         'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
         'priority': priorityName,
-        'notes': task['notes'],
+        'notes': task['notes'] ?? '',
       };
     }).toList();
   }
 
+  // Ambil semua task berdasarkan tanggal
   Future<List<Map<String, dynamic>>> getTasksByDate(String dueDate) async {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
 
-    final tasks = await supabase
+    final tasksData = await supabase
         .from('tasks')
         .select('title, due_date, due_time, category_id, priority_id, notes')
         .eq('user_id', user.id)
@@ -229,7 +232,7 @@ class TaskServices {
       for (var p in prioritiesData) p['id'].toString(): p['name'] as String
     };
 
-    return tasks.map<Map<String, dynamic>>((task) {
+    return tasksData.map<Map<String, dynamic>>((task) {
       final categoryName =
           categoryMap[task['category_id'].toString()] ?? 'Other';
       final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
@@ -239,7 +242,7 @@ class TaskServices {
         'due_time': task['due_time'] ?? '',
         'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
         'priority': priorityName,
-        'notes': task['notes'],
+        'notes': task['notes'] ?? '',
       };
     }).toList();
   }
@@ -249,28 +252,71 @@ class TaskServices {
     final user = supabase.auth.currentUser;
     if (user == null) throw Exception("User not logged in");
 
-    // Ambil task belum selesai
     final tasksData = await supabase
         .from('tasks')
-        .select('title, due_date, due_time, category_id')
+        .select('title, due_date, due_time, category_id, priority_id, notes')
         .eq('user_id', user.id)
-        .eq('completed', false);
+        .eq('completed', false)
+        .order('due_date', ascending: true);
 
-    // Ambil kategori sekali
     final categoriesData = await supabase.from('categories').select('id, name');
-
     final categoryMap = {
       for (var c in categoriesData) c['id'].toString(): c['name'] as String
+    };
+
+    final prioritiesData = await supabase.from('priorities').select('id, name');
+    final priorityMap = {
+      for (var p in prioritiesData) p['id'].toString(): p['name'] as String
     };
 
     return tasksData.map<Map<String, dynamic>>((task) {
       final categoryName =
           categoryMap[task['category_id'].toString()] ?? 'Other';
+      final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
       return {
         'title': task['title'],
         'due_date': task['due_date'],
-        'due_time': task['due_time'],
+        'due_time': task['due_time'] ?? '',
         'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
+        'priority': priorityName,
+        'notes': task['notes'] ?? '',
+      };
+    }).toList();
+  }
+
+  // Ambil semua task milik user (selesai dan belum selesai)
+  Future<List<Map<String, dynamic>>> getAllUserTasks() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) throw Exception("User not logged in");
+
+    final tasksData = await supabase
+        .from('tasks')
+        .select('title, due_date, due_time, category_id, priority_id, notes, completed')
+        .eq('user_id', user.id)
+        .order('due_date', ascending: true);
+
+    final categoriesData = await supabase.from('categories').select('id, name');
+    final categoryMap = {
+      for (var c in categoriesData) c['id'].toString(): c['name'] as String
+    };
+
+    final prioritiesData = await supabase.from('priorities').select('id, name');
+    final priorityMap = {
+      for (var p in prioritiesData) p['id'].toString(): p['name'] as String
+    };
+
+    return tasksData.map<Map<String, dynamic>>((task) {
+      final categoryName =
+          categoryMap[task['category_id'].toString()] ?? 'Other';
+      final priorityName = priorityMap[task['priority_id'].toString()] ?? 'Low';
+      return {
+        'title': task['title'],
+        'due_date': task['due_date'],
+        'due_time': task['due_time'] ?? '',
+        'category_icon': categoryIcons[categoryName] ?? Icons.category_outlined,
+        'priority': priorityName,
+        'notes': task['notes'] ?? '',
+        'completed': task['completed'],
       };
     }).toList();
   }

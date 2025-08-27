@@ -4,16 +4,17 @@ import 'package:intl/intl.dart';
 import '../services/task_service.dart';
 import '../services/auth_services.dart';
 
-class CalenderScreen extends StatefulWidget {
-  const CalenderScreen({super.key});
+class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
 
   @override
-  State<CalenderScreen> createState() => _CalenderScreenState();
+  State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
-class _CalenderScreenState extends State<CalenderScreen> {
+class _CalendarScreenState extends State<CalendarScreen> {
   late DateTime _selectedDate;
   late List<DateTime> _weekDates;
+  bool _showAllTasks = false; // Toggle between daily and all tasks view
 
   final Map<String, IconData> categoryIcons = {
     'Religius': Icons.mosque,
@@ -218,6 +219,23 @@ class _CalenderScreenState extends State<CalenderScreen> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: IconButton(
+              icon: Icon(
+                _showAllTasks ? Icons.calendar_today : Icons.list,
+                color: const Color(0xFF584A4A),
+                size: 24,
+              ),
+              onPressed: () {
+                setState(() {
+                  _showAllTasks = !_showAllTasks;
+                });
+              },
+            ),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,16 +249,13 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-
               if (snapshot.hasError) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text("Error: ${snapshot.error}"),
                 );
               }
-
               final profile = snapshot.data ?? {};
-
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -258,7 +273,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      _formatHeaderDate(_selectedDate),
+                      _showAllTasks ? 'All Tasks' : _formatHeaderDate(_selectedDate),
                       style: GoogleFonts.poppins(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -270,49 +285,51 @@ class _CalenderScreenState extends State<CalenderScreen> {
               );
             },
           ),
-          const SizedBox(height: 30),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(7, (index) {
-                final date = _weekDates[index];
-                final isSelected = date.day == _selectedDate.day &&
-                    date.month == _selectedDate.month &&
-                    date.year == _selectedDate.year;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedDate = date;
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: isSelected
-                        ? const Color(0xFFA0D7C8)
-                        : Colors.transparent,
-                    radius: 18.0,
-                    child: Text(
-                      _formatDate(date),
-                      style: GoogleFonts.poppins(
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
-                        color:
-                            isSelected ? const Color(0xFF584A4A) : Colors.grey,
-                        fontSize: 14,
+          if (!_showAllTasks) ...[
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(7, (index) {
+                  final date = _weekDates[index];
+                  final isSelected = date.day == _selectedDate.day &&
+                      date.month == _selectedDate.month &&
+                      date.year == _selectedDate.year;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: isSelected
+                          ? const Color(0xFFA0D7C8)
+                          : Colors.transparent,
+                      radius: 18.0,
+                      child: Text(
+                        _formatDate(date),
+                        style: GoogleFonts.poppins(
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
+                          color:
+                              isSelected ? const Color(0xFF584A4A) : Colors.grey,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
-          ),
+          ],
           const SizedBox(height: 20),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: taskServices
-                  .getTasksByDate(_formatSupabaseDate(_selectedDate)),
+              future: _showAllTasks
+                  ? taskServices.getAllUserTasks()
+                  : taskServices.getTasksByDate(_formatSupabaseDate(_selectedDate)),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -324,7 +341,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                 if (tasks.isEmpty) {
                   return Center(
                     child: Text(
-                      'No tasks for this date',
+                      _showAllTasks ? 'No tasks created yet' : 'No tasks for this date',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: const Color(0xFF584A4A),
