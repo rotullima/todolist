@@ -125,7 +125,7 @@ class _RegisterModalState extends State<RegisterModal> {
               const SizedBox(height: 20),
               _buildTextField(
                 controller: nomerHpController,
-                label: 'Contact NUmber',
+                label: 'Contact Number',
                 hint: '+628123456789',
                 validator: (value) => value == null || value.isEmpty ? 'Contact number must not be empty' : null,
               ),

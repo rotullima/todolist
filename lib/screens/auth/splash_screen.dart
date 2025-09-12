@@ -17,7 +17,7 @@ class SplashScreen extends StatelessWidget {
 
   void _showLoginModal(BuildContext context) {
     showModalBottomSheet(
-      isScrollControlled: true,
+      isScrollControlled: true,                        
       context: context,
       builder: (context) => const LoginModal(),
     );
